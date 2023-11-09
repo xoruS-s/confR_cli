@@ -1,0 +1,56 @@
+.UC_vlan_table {
+    border-collapse: collapse;
+    font-family: Consolas, sans-serif;
+    width: 500px;
+    text-align: center;
+    margin: 50px auto;
+}
+
+.UC_vlan_table caption {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+td {
+    border: 1px solid gray;
+    height: 25px;
+}
+td:nth-child(6), td:nth-child(7) {
+    border: none;
+    width: 30px;
+}
+
+.UC_vlan_table_header td { /*Заголовки*/
+    background-color: #34495e;
+    font-weight: 600;
+    color: white;
+    height: 40px;
+}
+.UC_vlan_table_header td:first-child {
+    width: 80px;
+}
+.UC_vlan_table_header td:last-child {
+    width: 150px;
+}
+
+.int_table {
+    border-collapse: collapse;
+    font-family: Consolas, sans-serif;
+    width: 700px;
+    text-align: center;
+    margin: 0 auto;
+}
+caption {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: Consolas, sans-serif;
+    width: 700px;
+}
+.int_table_header td {
+    background-color: #34495e;
+    font-weight: 600;
+    color: white;
+    height: 40px;
+}
