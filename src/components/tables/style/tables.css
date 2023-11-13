@@ -20,7 +20,12 @@ td:nth-child(6), td:nth-child(7) {
     border: none;
     width: 30px;
 }
-
+/*.UC_vlan_table_header {*/
+/*    width: 640px;*/
+/*}*/
+.UC_vlan_table_row {
+    transition: .1s;
+}
 .UC_vlan_table_header td { /*Заголовки*/
     background-color: #34495e;
     font-weight: 600;
@@ -32,6 +37,21 @@ td:nth-child(6), td:nth-child(7) {
 }
 .UC_vlan_table_header td:last-child {
     width: 150px;
+}
+.UC_vlan_table_row:hover {
+    background-color: #bdc3c7;
+}
+.vlan_table_input input {
+    width: calc(100% - 3px);
+    height: 100%;
+    border: none;
+    outline: none;
+    font-family: Consolas, sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
+.td_edit_btn:hover .edit_btn {
+    color: red;
 }
 
 .int_table {
@@ -54,3 +74,4 @@ caption {
     color: white;
     height: 40px;
 }
+

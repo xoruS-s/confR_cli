@@ -22,6 +22,7 @@ const PandingTable = ({ state }) => {
                 <TabPanel value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
                 <TabPanel value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
             </TabContext>
+            <button>save</button>
         </div>
     );
 };
