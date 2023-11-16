@@ -19,12 +19,9 @@ const View_table = () => {
         {id: '2190', number: '2190', description: 'HOMENET2', ipAddress: '2'},
         {id: '2191', number: '2191', description: 'HOMENET3', ipAddress: '3'}
 ]
-
     const [page_table, set_page_table] = useState(1);
     let range_table = [];
-
     let count_pages = Math.ceil(server_data.length / 5);
-
     const set_page = (e) => {
         const { name } = e.target
 
@@ -39,7 +36,6 @@ const View_table = () => {
             }
         }
     }
-
     const data = server_data.map((el, i) => {
         return i % 5 === 0 ? server_data.slice(i, i + 5) : [el];
     });
@@ -49,18 +45,27 @@ const View_table = () => {
         }
     })
 
+    const cell_click = ({ name, value }) => {
+
+
+        console.log(name, value)
+    }
+
+
+
+
     return (
         <>
-            <table style={{ height: '300px' }}>
+            <table style={{ height: '300px', borderCollapse: 'collapse', textAlign: 'center' }}>
                 <tr style={{ height: '20px' }}>
                     <td>Номер</td><td>Название</td><td>Адрес</td>
                 </tr>
                 {
                     range_table[page_table - 1].map(value => (
                         <tr style={{ height: '20px' }}>
-                            <td>{value.id}</td>
-                            <td>{value.description}</td>
-                            <td>{value.ipAddress}</td>
+                            <td onClick={() => { cell_click({ name: 'id', value: value.id }) }}>{value.id}</td>
+                            <td onClick={() => { cell_click({ name: 'description', value: value.description }) }}>{value.description}</td>
+                            <td onClick={() => { cell_click({ name: 'ipAddress', value: value.ipAddress }) }}>{value.ipAddress}</td>
                         </tr>
                     ))
                 }

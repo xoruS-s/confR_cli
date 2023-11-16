@@ -1,9 +1,13 @@
+.wrapper {
+    height: 352px;
+    /*border: 1px solid green;*/
+}
 .UC_vlan_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
-    width: 500px;
+    width: 700px;
     text-align: center;
-    margin: 50px auto;
+    /*margin: 50px auto;*/
 }
 
 .UC_vlan_table caption {
@@ -20,9 +24,6 @@ td:nth-child(6), td:nth-child(7) {
     border: none;
     width: 30px;
 }
-/*.UC_vlan_table_header {*/
-/*    width: 640px;*/
-/*}*/
 .UC_vlan_table_row {
     transition: .1s;
 }
@@ -74,4 +75,23 @@ caption {
     color: white;
     height: 40px;
 }
-
+.arr_input {
+    width: 30px;
+    height: 30px;
+}
+.page_view {
+    /*border: 1px solid grey;*/
+    width: 30px;
+    height: 30px;
+}
+.pages_area {
+    margin-top: 10px;
+    width: 635px;
+    display: flex;
+    justify-content: space-between;
+}
+.pagin {
+    width: 65px;
+    display: flex;
+    justify-content: space-between;
+}

@@ -11,15 +11,15 @@ const PandingTable = ({ state }) => {
     };
 
     return (
-        <div style={{ width: '70%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', border: '1px solid red' }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', selectedColor: '#2c3e50' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
-                        <Tab label="Таблица VLAN" value="1" />
-                        <Tab label="Таблица интерфесов" value="2" />
+                        <Tab label="VLAN" value="1" />
+                        <Tab label="Интерфейсы" value="2" />
                     </TabList>
                 </Box>
-                <TabPanel value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
+                <TabPanel style={{ padding: '0' }} value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
                 <TabPanel value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
             </TabContext>
             {/*<button>save</button>*/}
