@@ -1,0 +1,1 @@
+export { default as View_table } from './table';

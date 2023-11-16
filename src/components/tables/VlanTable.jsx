@@ -7,40 +7,17 @@ import Button from '@mui/material/Button';
 
 import './style/tables.css';
 
-
-// const VlanTable = ({ data }) => {
-//     const [rows, setRows] = useState(data);
-//     const delete_row = (number) => {
-//         const newRows = rows.filter(row => row.number !== number);
-//         setRows(newRows)
-//     }
-//
-//     return (
-//         <table className={'UC_vlan_table'}>
-//             <caption>VLAN Таблица</caption>
-//             <tr className={'UC_vlan_table_header'}>
-//                 <td>Номер</td> <td>Описание</td> <td>IP Адрес</td>
-//             </tr>
-//             {
-//                 rows.map(row => (
-//                     <tr className={'UC_vlan_table_row'} key={row.number}>
-//                         <td className={'UC_vlan_table_cell'}>{row.number}</td>
-//                         <td className={'UC_vlan_table_cell'}>{row.description}</td>
-//                         <td className={'UC_vlan_table_cell'}>{row.ipAddress}</td>
-//                         <td style={{ width: '30px', border: 'none' }}><EditOutlinedIcon style={{ color: '#7f8c8d', fontSize: 20, cursor: 'pointer' }}/></td>
-//                         <td style={{ width: '30px', border: 'none'  }}><DeleteOutlineOutlinedIcon onClick={() => delete_row(row.number)} style={{ color: '#c0392b', fontSize: 20, cursor: 'pointer' }}/></td>
-//                     </tr>
-//                 ))
-//             }
-//         </table>
-//     )
-// };
+//TODO 1. Реализовать проверку на существование номера vlan
+//TODO 2. Реализовать проверку на пустные значения
+//TODO 3. Реализовать сортировку по номеру при каждом добавлении новой строки
+//TODO 4. Сделать возможность редактирования каждой ячейки таблицы
+//TODO 5. Сделать пандинг таблицы
 
 const VlanTable = ({ data }) => {
     const [rows, setRows] = useState(data);
     const [editingRow, setEditingRow] = useState(null);
-    // const [new_row, set_new_row] = useState([]);
-    // const [id, set_id] = useState(Number);
+    const [id_vlan, set_id_vlan] = useState([]);
+    const [sorting_rows, set_sorting_rows] = useState([]);
 
     const delete_row = (id) => {
         const newRows = rows.filter(row => row.id !== id);
@@ -70,30 +47,17 @@ const VlanTable = ({ data }) => {
             ];
         });
     }
-    // const handle_change_new_row = (e) => {
-    //     const { name, value } = e.target;
-    //
-    //     if (name === 'number') {
-    //         set_id(value);
-    //     }
-    //
-    //     const data = {
-    //         ...new_row,
-    //         id: '',
-    //         [name]: value
-    //     }
-    //     set_new_row(data);
-    // }
-    // const add_new_row = () => {
-    //     new_row.id = id;
-    //     setRows([...rows, new_row]);
-    //     set_new_row([{ id: '', number: '', description: '', ipAddress: '' }])
-    // }
 
     const [vl_number, set_vl_number] = useState('');
     const [vl_description, set_vl_description] = useState('');
     const [vl_ip, set_vl_ip] = useState('');
-    const [isExists, setIsExists] = useState(false);
+
+    useEffect(() => {
+        for (const row of rows) {
+            set_id_vlan([...id_vlan, row.id])
+        }
+
+    }, [])
 
     const handle_change_em_row = (e) => {
         const { name, value } = e.target
@@ -120,15 +84,51 @@ const VlanTable = ({ data }) => {
 
         for (const row of rows) {
             if (new_row.id !== row.id) {
-                setRows([...rows, new_row])
-            } else {
-                alert('Такой номер vlan уже существует!');
-                setIsExists(true);
+                setRows([...rows, new_row]);
+                set_vl_number(''); set_vl_description(''); set_vl_ip('');
+
+
+                break
+            }
+            else {
+                alert('Такая херня уже существует!');
+                set_vl_number(''); set_vl_description(''); set_vl_ip('');
             }
         }
 
-        set_vl_number(''); set_vl_description(''); set_vl_ip('');
+        const sort_vlan = [...rows].sort((a, b) => a.id - b.id);
+        set_sorting_rows([...sort_vlan]);
     }
+
+
+    const [page_table, set_page_table] = useState(1);
+    let range_table = [];
+
+    let count_pages = Math.ceil(rows.length / 5);
+
+    const set_page = (e) => {
+        const { name } = e.target
+
+        if (name === 'left') {
+            if (page_table !== 1) {
+                set_page_table(page_table - 1)
+            }
+        }
+        if (name === 'right') {
+            if (page_table !== count_pages) {
+                set_page_table(page_table + 1)
+            }
+        }
+    }
+
+    const range_data = rows.map((el, i) => {
+        return i % 5 === 0 ? rows.slice(i, i + 5) : [el];
+    });
+    range_data.map((range, i) => {
+        if (i % 5 === 0) {
+            range_table.push(range)
+        }
+    })
 
      return (
         <>
@@ -139,66 +139,69 @@ const VlanTable = ({ data }) => {
                     <td>Описание</td>
                     <td>IP Адрес</td>
                 </tr>
-                {rows.map(row => {
-                    if (row.id === editingRow) {
+                {
+                    range_table[page_table - 1].map(v => {
+                        if (v.id === editingRow) {
+                            return (
+                                <tr key={v.id} className={'vlan_table_input'}>
+                                    <td>
+                                        <input
+                                            name="number"
+                                            value={v.number}
+                                            onChange={e => handleChange(e, v.id)}
+                                            autoComplete="off"
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="description"
+                                            value={v.description}
+                                            onChange={e => handleChange(e, v.id)}
+                                            autoComplete="off"
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="ipAddress"
+                                            value={v.ipAddress}
+                                            onChange={e => handleChange(e, v.id)}
+                                            autoComplete="off"
+                                        />
+                                    </td>
+                                    <td style={{width: '30px', border: 'none'}}>
+                                        <CheckBoxOutlinedIcon onClick={stopEditing}
+                                                              style={{color: '#27ae60', fontSize: 20, cursor: 'pointer'}}/>
+                                    </td>
+                                </tr>
+                            )
+                        }
                         return (
-                            <tr key={row.id} className={'vlan_table_input'}>
-                                <td>
-                                    <input
-                                        name="number"
-                                        value={row.number}
-                                        onChange={e => handleChange(e, row.id)}
-                                        autoComplete="off"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        name="description"
-                                        value={row.description}
-                                        onChange={e => handleChange(e, row.id)}
-                                        autoComplete="off"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        name="ipAddress"
-                                        value={row.ipAddress}
-                                        onChange={e => handleChange(e, row.id)}
-                                        autoComplete="off"
-                                    />
-                                </td>
-                                <td style={{width: '30px', border: 'none'}}>
-                                    <CheckBoxOutlinedIcon onClick={stopEditing}
-                                                          style={{color: '#27ae60', fontSize: 20, cursor: 'pointer'}}/>
-                                </td>
-                            </tr>
-                        );
-                    }
-                    return (
-                        <>
-                            <tr className={'UC_vlan_table_row'} key={row.number}>
-                                <td className={'UC_vlan_table_cell'}>{row.number}</td>
-                                <td className={'UC_vlan_table_cell'}>{row.description}</td>
-                                <td className={'UC_vlan_table_cell'}>{row.ipAddress}</td>
-                                <td style={{width: '30px', border: 'none', cursor: 'pointer'}} className={'td_edit_btn'}
-                                    onClick={() => {
-                                        startEditing(row.id)
-                                    }}><EditOutlinedIcon
-                                    className={'edit_btn'}
-                                    style={{color: '#7f8c8d', fontSize: 20}}/></td>
-                                <td
-                                    style={{width: '30px', border: 'none', cursor: 'pointer'}}
-                                    className={'td_del_btn'}
-                                    onClick={() => delete_row(row.id)}>
-                                    <DeleteOutlineOutlinedIcon
-                                        className={'del_btn'}
-                                        style={{color: '#c0392b', fontSize: 20}}
-                                    />
-                                </td>
-                            </tr>
-                        </>
-                    )
-                })}
+                            <>
+                                <tr className={'UC_vlan_table_row'} key={v.number}>
+                                    <td className={'UC_vlan_table_cell'}>{v.number}</td>
+                                    <td className={'UC_vlan_table_cell'}>{v.description}</td>
+                                    <td className={'UC_vlan_table_cell'}>{v.ipAddress}</td>
+                                    <td style={{width: '30px', border: 'none', cursor: 'pointer'}} className={'td_edit_btn'}
+                                        onClick={() => {
+                                            startEditing(v.id)
+                                        }}><EditOutlinedIcon
+                                        className={'edit_btn'}
+                                        style={{color: '#7f8c8d', fontSize: 20}}/></td>
+                                    <td
+                                        style={{width: '30px', border: 'none', cursor: 'pointer'}}
+                                        className={'td_del_btn'}
+                                        onClick={() => delete_row(v.id)}>
+                                        <DeleteOutlineOutlinedIcon
+                                            className={'del_btn'}
+                                            style={{color: '#c0392b', fontSize: 20}}
+                                        />
+                                    </td>
+                                </tr>
+                            </>
+                        )
+                    })
+                }
+                <tr style={{ height: '5px' }}/>
                 <tr className={'vlan_table_input'}>
                     <td>
                         <input name="number"
@@ -224,14 +227,16 @@ const VlanTable = ({ data }) => {
                                             style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
                     </td>
                 </tr>
-
             </table>
+            <input type={'button'} value={'<'} name={'left'} onClick={set_page}/>
+            <input type={'button'} value={'>'} name={'right'} onClick={set_page}/>
+            <br />
             <Button style={{ backgroundColor: '#27ae60'}} variant="contained">
                 Сохранить
             </Button>
             {
-                rows.map(row => (
-                    <div style={{ fontFamily: 'Consoles, sans-serif' }}>
+                sorting_rows.map(row => (
+                    <div style={{fontFamily: 'Consoles, sans-serif'}}>
                         <span style={{whiteSpace: 'pre-line'}}>
                             interface vlan {row.number}<br/>
                             {row.description !== '' && (
