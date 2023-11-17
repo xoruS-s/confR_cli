@@ -1,3 +1,10 @@
 .em_row {
     height: calc(100% - 4px);
 }
+
+.selected, .selected:hover {
+    background-color: aqua;
+}
+.clickable-row:hover {
+    background-color: aquamarine;
+}

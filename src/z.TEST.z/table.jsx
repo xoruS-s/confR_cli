@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-
+import { Table } from 'antd';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import './table.css';
 
 const View_table = () => {
+    /// - 1
     const server_data = [
         {id: '1', number: '1', description: '', ipAddress: ''},
         {id: '2', number: '2', description: 'SW', ipAddress: '172.16.1.12'},
@@ -45,14 +46,51 @@ const View_table = () => {
         }
     })
 
+    /// - 2
     const cell_click = ({ name, value }) => {
 
 
         console.log(name, value)
     }
 
+    /// - 3
+    const [selected_rows, set_selected_rows] = useState([]);
+    const handle_check = (event, id) => {
+        const selected_index = selected_rows.indexOf(id)
+        let new_selected = [...selected_rows]
 
+        if (selected_index === -1) {
+            new_selected.push(id)
+        } else {
+            new_selected.splice(selected_index, 1)
+        }
 
+        set_selected_rows(new_selected)
+    };
+    const is_selected = id => selected_rows.includes(id);
+    // console.log(selected_rows)
+
+    /// - 4
+    const [editing_row, set_editing_row] = useState(false);
+    const [edit_row, set_edit_row] = useState([]);
+    const handle_editing_selected_rows = () => {
+        if (editing_row) {
+            set_editing_row(false)
+        }
+        else {
+            set_editing_row(true)
+            for (const row of server_data) {
+                console.log('0')
+                for (const id of selected_rows) {
+                    if (row.id === id) {
+                        set_edit_row([...edit_row, row])
+                    }
+                }
+            }
+        }
+    }
+
+    // console.log(edit_row)
 
     return (
         <>
@@ -61,8 +99,8 @@ const View_table = () => {
                     <td>Номер</td><td>Название</td><td>Адрес</td>
                 </tr>
                 {
-                    range_table[page_table - 1].map(value => (
-                        <tr style={{ height: '20px' }}>
+                    range_table[page_table - 1].map((value, index) => (
+                        <tr key={index} style={{ height: '20px' }}>
                             <td onClick={() => { cell_click({ name: 'id', value: value.id }) }}>{value.id}</td>
                             <td onClick={() => { cell_click({ name: 'description', value: value.description }) }}>{value.description}</td>
                             <td onClick={() => { cell_click({ name: 'ipAddress', value: value.ipAddress }) }}>{value.ipAddress}</td>
@@ -72,6 +110,97 @@ const View_table = () => {
             </table>
             <input type={'button'} value={'<'} name={'left'} onClick={set_page}/>
             <input type={'button'} value={'>'} name={'right'} onClick={set_page}/>
+
+            <hr/>
+
+            <table style={{ height: '300px', borderCollapse: 'collapse', textAlign: 'center' }}>
+                <tr style={{ height: '20px' }}>
+                    <td><input type={'checkbox'}/></td> <td>Номер</td><td>Название</td><td>Адрес</td>
+                </tr>
+                {
+                    server_data.map((value, index) => (
+                        <tr key={index}
+                            className={is_selected(value.id) ? 'selected' : ''}
+                            onClick={event => handle_check(event, value.id)}
+                        >
+                            <td>
+                                <input
+                                    type={'checkbox'}
+                                    checked={is_selected(value.id)}
+                                    onChange={event => handle_check(event, value.id)}
+                                />
+                            </td>
+                            <td>{value.number}</td>
+                            <td>{value.description}</td>
+                            <td>{value.ipAddress}</td>
+                        </tr>
+                    ))
+                }
+            </table>
+            {editing_row && (
+                <table style={{ position: 'absolute', top: '350px', left: '300px', borderCollapse: 'collapse' }}>
+                    <tr>
+                        <td>Номер</td> <td>Название</td> <td>Адрес</td>
+                    </tr>
+                    {
+                        edit_row.map(value => (
+                            <tr>
+                                <td>
+                                    <input
+                                        name={'edit_number'}
+                                        value={value.number}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name={'edit_description'}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name={'edit_ip'}
+                                    />
+                                </td>
+                            </tr>
+                        ))
+                    }
+
+                </table>
+            )}
+            {editing_row ?
+                (<button onClick={handle_editing_selected_rows}>save</button>)
+                :
+                (<button onClick={handle_editing_selected_rows}>edit</button>)
+            }
+
+
+            {/*<table style={{ height: '300px', borderCollapse: 'collapse', textAlign: 'center' }}>
+                <tr style={{ height: '20px' }}>
+                    <td><input type={'checkbox'}/></td> <td>Номер</td><td>Название</td><td>Адрес</td>
+                </tr>
+                {
+                    server_data.map((value, index) => (
+                        <tr key={index}
+                            className={is_selected(value.id) ? 'selected' : ''}
+                            onClick={event => handle_check(event, value.id)}
+                        >
+                            <td>
+                                <input
+                                    type={'checkbox'}
+                                    checked={is_selected(value.id)}
+                                    onChange={event => handle_check(event, value.id)}
+                                />
+                            </td>
+                            <td>{value.number}</td>
+                            <td>{value.description}</td>
+                            <td>{value.ipAddress}</td>
+                        </tr>
+                    ))
+                }
+            </table>
+            <button onClick={handle_editing_selected_rows}>edit</button>*/}
+
+
         </>
     )
 
