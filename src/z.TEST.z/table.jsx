@@ -72,21 +72,12 @@ const View_table = () => {
 
     /// - 4
     const [editing_row, set_editing_row] = useState(false);
-    const [edit_row, set_edit_row] = useState([]);
     const handle_editing_selected_rows = () => {
         if (editing_row) {
             set_editing_row(false)
         }
         else {
             set_editing_row(true)
-            for (const row of server_data) {
-                console.log('0')
-                for (const id of selected_rows) {
-                    if (row.id === id) {
-                        set_edit_row([...edit_row, row])
-                    }
-                }
-            }
         }
     }
 
@@ -143,26 +134,32 @@ const View_table = () => {
                         <td>Номер</td> <td>Название</td> <td>Адрес</td>
                     </tr>
                     {
-                        edit_row.map(value => (
-                            <tr>
-                                <td>
-                                    <input
-                                        name={'edit_number'}
-                                        value={value.number}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        name={'edit_description'}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        name={'edit_ip'}
-                                    />
-                                </td>
-                            </tr>
-                        ))
+                        server_data.map((row) => {
+                            for (const id of selected_rows) {
+                                if (row.id === id) {
+                                    return (
+                                        <tr>
+                                            <td>
+                                                <input
+                                                    name={'edit_number'}
+                                                    value={row.number}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    name={'edit_description'}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    name={'edit_ip'}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+                            }
+                        })
                     }
 
                 </table>
