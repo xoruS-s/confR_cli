@@ -134,7 +134,14 @@ const View_table = () => {
 
             <table style={{ height: '300px', borderCollapse: 'collapse', textAlign: 'center' }}>
                 <tr style={{ height: '20px' }}>
-                    <td><input type={'checkbox'}/></td> <td>Номер</td><td>Название</td><td>Адрес</td>
+                    <td>
+                        <input
+                            type={'checkbox'}
+                            // checked={is_selected('all')}
+                            // onChange={event => handle_check(event, value.id)}
+                        />
+                    </td>
+                    <td>Номер</td><td>Название</td><td>Адрес</td>
                 </tr>
                 {
                     server_data.map((value, index) => (

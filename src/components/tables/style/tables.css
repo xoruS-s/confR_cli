@@ -55,19 +55,14 @@ td:nth-child(6), td:nth-child(7) {
     color: red;
 }
 
+
+/*Interface table*/
 .int_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
     width: 700px;
     text-align: center;
-    margin: 0 auto;
-}
-caption {
-    margin: 10px 0;
-    font-weight: bold;
-    font-size: 20px;
-    font-family: Consolas, sans-serif;
-    width: 700px;
+    /*margin: 0 auto;*/
 }
 .int_table_header td {
     background-color: #34495e;

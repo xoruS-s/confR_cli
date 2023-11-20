@@ -20,7 +20,7 @@ const PandingTable = ({ state }) => {
                     </TabList>
                 </Box>
                 <TabPanel style={{ padding: '0' }} value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
-                <TabPanel value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
+                <TabPanel style={{ padding: '0' }} value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
             </TabContext>
             {/*<button>save</button>*/}
         </div>
