@@ -5,7 +5,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import './table.css';
 
 const View_table = () => {
-    /// - 1
+    /// - 1 - [Начальные данные и пагинация]
     const server_data = [
         {id: '1', number: '1', description: '', ipAddress: ''},
         {id: '2', number: '2', description: 'SW', ipAddress: '172.16.1.12'},
@@ -46,14 +46,16 @@ const View_table = () => {
         }
     })
 
-    /// - 2
+
+    /// - 2 - [Изменение отдельных ячеек при нажатии]
     const cell_click = ({ name, value }) => {
 
 
         console.log(name, value)
     }
 
-    /// - 3
+
+    /// - 3 - [Выделение строк]
     const [selected_rows, set_selected_rows] = useState([]);
     const handle_check = (event, id) => {
         const selected_index = selected_rows.indexOf(id)
@@ -68,20 +70,46 @@ const View_table = () => {
         set_selected_rows(new_selected)
     };
     const is_selected = id => selected_rows.includes(id);
-    // console.log(selected_rows)
 
-    /// - 4
+
+    /// - 4 - [Радактирование по диапазону]
     const [editing_row, set_editing_row] = useState(false);
-    const handle_editing_selected_rows = () => {
-        if (editing_row) {
-            set_editing_row(false)
-        }
-        else {
-            set_editing_row(true)
-        }
-    }
+    const handle_editing_selected_rows = (val) => {
+        if (val === true) {
+            set_editing_row(val);
 
-    // console.log(edit_row)
+            // for (const row of server_data) {
+            //     for (const id of selected_rows) {
+            //         if (row.id === id) {
+            //             set_rows([...rows, row])
+            //
+            //
+            //         }
+            //     }
+            // }
+        }
+        else set_editing_row(val)
+    }
+    const [rows, set_rows] = useState([]);
+    const handle_change_rows = (e, rows) => {
+        const { name, value } = e.target;
+
+        console.log(e.target)
+        // for (const row of server_data) {
+        //     for (const id of rows) {
+        //         if (id === row.id) {
+        //             let new_row = {
+        //                 id: row.id,
+        //
+        //             }
+        //         }
+        //     }
+        // }
+    }
+    const handle_zero = (e) => {
+        const { name } = e.target;
+        return name
+    }
 
     return (
         <>
@@ -129,31 +157,24 @@ const View_table = () => {
                 }
             </table>
             {editing_row && (
-                <table style={{ position: 'absolute', top: '350px', left: '300px', borderCollapse: 'collapse' }}>
+                <table style={{ position: 'absolute', top: '347px', left: '300px', borderCollapse: 'collapse', width: '400px', textAlign: 'center' }}>
                     <tr>
                         <td>Номер</td> <td>Название</td> <td>Адрес</td>
                     </tr>
                     {
-                        server_data.map((row) => {
+                        server_data.map((row, i) => {
                             for (const id of selected_rows) {
                                 if (row.id === id) {
                                     return (
                                         <tr>
                                             <td>
-                                                <input
-                                                    name={'edit_number'}
-                                                    value={row.number}
-                                                />
+                                                { row.number }
                                             </td>
                                             <td>
-                                                <input
-                                                    name={'edit_description'}
-                                                />
+                                                { row.description }
                                             </td>
                                             <td>
-                                                <input
-                                                    name={'edit_ip'}
-                                                />
+                                                { row.ipAddress }
                                             </td>
                                         </tr>
                                     )
@@ -161,13 +182,47 @@ const View_table = () => {
                             }
                         })
                     }
+                    <tr style={{ border: 'none' }}>
+                        <td style={{ border: "none" }}></td> <td style={{ border: "none" }}></td> <td style={{ border: "none" }}></td>
+                    </tr>
+                    <tr style={{ position: 'relative' }}>
+                        <td style={{ backgroundColor: 'lightgray' }}>
+                            <input
+                                disabled={true}
+                                // name={'edit_ip'}
+                                // onChange={e => handle_change_rows(e, row, row.id)}
+                                style={{ border: 'none', outline: 'none', backgroundColor: 'lightgray' }}
+                                className={'input_range'}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                name={'edit_range_description'}
 
+                                onChange={e => handle_change_rows(e, selected_rows)}
+                                style={{ border: 'none', outline: 'none' }}
+                                className={'input_range'}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                // name={'edit_ip'}
+                                // onChange={e => handle_change_rows(e, row, row.id)}
+                                style={{ border: 'none', outline: 'none'  }}
+                                className={'input_range'}
+                            />
+                        </td>
+                        <td style={{ border: 'none' }}>
+                            <button style={{ position: 'absolute', top: 3, right: '-50px' }}>EDIT</button>
+                        </td>
+                    </tr>
                 </table>
             )}
+
             {editing_row ?
-                (<button onClick={handle_editing_selected_rows}>save</button>)
+                (<button onClick={() => handle_editing_selected_rows(false)}>save</button>)
                 :
-                (<button onClick={handle_editing_selected_rows}>edit</button>)
+                (<button onClick={() => handle_editing_selected_rows(true)}>edit</button>)
             }
 
 
@@ -196,10 +251,31 @@ const View_table = () => {
                 }
             </table>
             <button onClick={handle_editing_selected_rows}>edit</button>*/}
-
-
         </>
     )
+
+    /*// const [rows, set_rows] = useState([]);
+    // const start_edit = (row_id) => {
+    //     set_editing_row(row_id);
+    // }
+    // const stop_edit = () => {
+    //     set_editing_row(false)
+    // }
+    // {/!*const handle_edit = (e, row_id) => {*!/}
+    // {/!*    const { name, value } = e.target;*!/}
+    // {/!*    set_rows(rows => {*!/}
+    // {/!*        const rowIndex = rows.findIndex(r => r.id === row_id);*!/}
+    //         const updatedRow = {
+    //             ...rows[rowIndex],
+    //             [name]: value
+    //         };
+    //         return [
+    //             ...rows.slice(0, rowIndex),
+    //             updatedRow,
+    //             ...rows.slice(rowIndex + 1)
+    //         ];
+    //     });
+    // }
 
     // const [d_number, set_d_number] = useState('');
     // const [d_name, set_d_name] = useState('');
@@ -314,7 +390,7 @@ const View_table = () => {
     //                 </td>
     //             </tr>
     //         </table>
-    //         {/*<button onClick={clear_row}>Очистить</button>*/}
+    //         {/!*<button onClick={clear_row}>Очистить</button>*!/}
     //         <button onClick={add_row}>Добавить</button>
     //     </div>
     // );
@@ -340,7 +416,7 @@ const View_table = () => {
     //             <p>{i}</p>
     //         ))}
     //     </>
-    // )
+    // )*/
 };
 
 export default View_table;
