@@ -27,9 +27,7 @@ td {
 /*    border: none;*/
 /*    width: 30px;*/
 /*}*/
-.UC_vlan_table_row {
-    transition: .1s;
-}
+
 .UC_vlan_table_header td { /*Заголовки*/
     background-color: #34495e;
     font-weight: 600;
