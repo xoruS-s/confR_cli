@@ -16,7 +16,7 @@ const PandingTable = ({ state }) => {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', selectedColor: '#2c3e50' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="VLAN" value="1" />
-                        <Tab label="Интерфейсы" value="2" />
+                        <Tab label="Порты" value="2" />
                     </TabList>
                 </Box>
                 <TabPanel style={{ padding: '0' }} value="1"><VlanTable data={state['data_vlan']}/></TabPanel>

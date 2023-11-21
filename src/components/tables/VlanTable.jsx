@@ -166,7 +166,7 @@ const VlanTable = ({ data }) => {
                              return (
                                  <>
                                      <tr className={'UC_vlan_table_row'} key={v.number}>
-                                         <td className={'UC_vlan_table_cell'}>{v.number}</td>
+                                         <td className={'UC_vlan_table_cell'} key={v.number}>{v.number}</td>
                                          <td className={'UC_vlan_table_cell'}>{v.description}</td>
                                          <td className={'UC_vlan_table_cell'}>{v.ipAddress}</td>
                                          <td style={{width: '30px', border: 'none', cursor: 'pointer'}} className={'td_edit_btn'}
@@ -222,35 +222,16 @@ const VlanTable = ({ data }) => {
                  </table>
              </div>
              <div className={'pages_area'}>
-                 <div className={'pagin'}>
+                 { page_table !== 1 ?
                      <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'}/>
-                     <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'}/>
-                 </div>
-                 <input type={'button'} className={'page_view'} value={page_table} />
+                     :
+                     <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'} disabled/> }
 
-                 {/*<Button style={{ backgroundColor: '#27ae60'}} variant="contained">*/}
-                 {/*    Сохранить*/}
-                 {/*</Button>*/}
-                 {/*{*/}
-                 {/*    sorting_rows.map(row => (*/}
-                 {/*        <div style={{fontFamily: 'Consoles, sans-serif'}}>*/}
-                 {/*       <span style={{whiteSpace: 'pre-line'}}>*/}
-                 {/*           interface vlan {row.number}<br/>*/}
-                 {/*           {row.description !== '' && (*/}
-                 {/*               <>*/}
-                 {/*                   name {row.description}<br/>*/}
-                 {/*               </>*/}
-                 {/*           )}*/}
-                 {/*           {row.ipAddress !== '' && (*/}
-                 {/*               <>*/}
-                 {/*                   ip address {row.ipAddress}<br/>*/}
-                 {/*               </>*/}
-                 {/*           )}*/}
-                 {/*           !*/}
-                 {/*       </span>*/}
-                 {/*        </div>*/}
-                 {/*    ))*/}
-                 {/*}*/}
+                 <input type={'button'} className={'page_view'} value={page_table}/>
+                 { page_table !== count_pages ?
+                     <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'}/>
+                     :
+                     <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/> }
              </div>
          </>
     )

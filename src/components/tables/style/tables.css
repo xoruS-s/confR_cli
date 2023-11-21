@@ -1,3 +1,5 @@
+
+
 .wrapper {
     height: 352px;
     /*border: 1px solid green;*/
@@ -15,6 +17,7 @@
     font-weight: bold;
     font-size: 20px;
 }
+
 
 td {
     border: 1px solid gray;
@@ -55,12 +58,11 @@ td:nth-child(6), td:nth-child(7) {
     color: red;
 }
 
-
 /*Interface table*/
 .int_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
-    width: 700px;
+    width: 1000px;
     text-align: center;
     /*margin: 0 auto;*/
 }
@@ -70,18 +72,21 @@ td:nth-child(6), td:nth-child(7) {
     color: white;
     height: 40px;
 }
-.arr_input {
+.int_table_rows td {
+    border: 1px solid grey;
+}
+.page_view {
+    pointer-events: none;
     width: 30px;
     height: 30px;
 }
-.page_view {
-    /*border: 1px solid grey;*/
+.arr_input {
     width: 30px;
     height: 30px;
 }
 .pages_area {
     margin-top: 10px;
-    width: 635px;
+    width: 100px;
     display: flex;
     justify-content: space-between;
 }
@@ -90,3 +95,51 @@ td:nth-child(6), td:nth-child(7) {
     display: flex;
     justify-content: space-between;
 }
+.select_mode {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    /*border: 1px solid #7f8c8d;*/
+    border: none;
+}
+.int_table_rows:hover {
+    background-color: #bdc3c7;
+}
+.EOI, .DOOI {
+    opacity: 0;
+}
+.int_table_rows:hover .select_mode {
+    background-color: #bdc3c7;
+}
+.int_table_rows:hover .EOI {
+    opacity: 1 !important;
+    color: #3498db !important;
+    transition: .1s !important;
+}
+.int_table_rows:hover .DOOI {
+    opacity: 1 !important;
+    color: #e74c3c !important;
+    transition: .1s !important;
+}
+.int_table_rows:hover .edit_btn_cell,
+.int_table_rows:hover .dell_btn_cell {
+    background-color: #fff !important;
+}
+
+
+
+
+/*.int_table_rows:hover td:nth-child(9),*/
+/*.int_table_rows:hover td:nth-child(10) {*/
+/*    border-top: 1px solid grey !important;*/
+/*    border-bottom: 1px solid grey !important;*/
+/*}*/
+/*.add_column {
+    position: absolute;
+    top: -25px;
+    right: 60px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid darkgrey;
+    border-radius: 50%;
+}*/

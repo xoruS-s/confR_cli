@@ -1,37 +1,38 @@
-/*.UC_vlan_table {*/
-/*    width: 500px;*/
-/*    font-family: Arial, sans-serif;*/
-/*    border: 1px solid grey;*/
-/*    margin: 0 auto;*/
-/*    border-radius: 5px;*/
-/*    padding: 5px;*/
-/*    text-align: center;*/
-/*}*/
-/*.UC_vlan_table_header {*/
-/*    !*border: 1px solid green;*!*/
-/*    font-weight: bold;*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*    justify-content: space-around;*/
-/*}*/
-/*.UC_vlan_table_row {*/
-/*    width: 100%;*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*    justify-content: space-between;*/
-/*    !*border: 1px solid red;*!*/
-/*    !*width: 100%;*!*/
-/*    !*padding: 5px;*!*/
-/*    !*background-color: darkgrey;*!*/
-/*    !*border-radius: 3px;*!*/
-/*    !*margin: 5px;*!*/
-/*}*/
-/*.UC_vlan_table_cell {*/
-/*    !*width: 33.333%;*!*/
-/*}*/
-/*.UC_vlan_input {*/
-/*    !*border: 1px solid blueviolet;*!*/
-/*    !*border: none;*!*/
-/*    width: 95%;*/
-/*    text-align: center;*/
-/*}*/
+/*
+.UC_vlan_table {
+    width: 500px;
+    font-family: Arial, sans-serif;
+    border: 1px solid grey;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+}
+.UC_vlan_table_header {
+    !*border: 1px solid green;*!
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.UC_vlan_table_row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    !*border: 1px solid red;*!
+    !*width: 100%;*!
+    !*padding: 5px;*!
+    !*background-color: darkgrey;*!
+    !*border-radius: 3px;*!
+    !*margin: 5px;*!
+}
+.UC_vlan_table_cell {
+    !*width: 33.333%;*!
+}
+.UC_vlan_input {
+    !*border: 1px solid blueviolet;*!
+    !*border: none;*!
+    width: 95%;
+    text-align: center;
+}*/
