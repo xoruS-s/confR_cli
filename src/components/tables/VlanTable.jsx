@@ -169,12 +169,16 @@ const VlanTable = ({ data }) => {
                                          <td className={'UC_vlan_table_cell'} key={v.number}>{v.number}</td>
                                          <td className={'UC_vlan_table_cell'}>{v.description}</td>
                                          <td className={'UC_vlan_table_cell'}>{v.ipAddress}</td>
-                                         <td style={{width: '30px', border: 'none', cursor: 'pointer'}} className={'td_edit_btn'}
-                                             onClick={() => {
-                                                 startEditing(v.id)
-                                             }}><EditOutlinedIcon
-                                             className={'edit_btn'}
-                                             style={{color: '#7f8c8d', fontSize: 20}}/></td>
+                                         <td
+                                             style={{width: '30px', border: 'none', cursor: 'pointer'}}
+                                             className={'td_edit_btn'}
+                                             onClick={ () => {startEditing(v.id)} }
+                                         >
+                                             <EditOutlinedIcon
+                                                 className={'edit_btn'}
+                                                 style={{color: '#7f8c8d', fontSize: 20}}
+                                             />
+                                         </td>
                                          <td
                                              style={{width: '30px', border: 'none', cursor: 'pointer'}}
                                              className={'td_del_btn'}
