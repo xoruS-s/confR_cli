@@ -81,6 +81,7 @@ td {
 .arr_input {
     width: 30px;
     height: 30px;
+    font-weight: bold;
 }
 .arr_input:hover {
     cursor: pointer;
@@ -89,7 +90,7 @@ td {
     cursor: not-allowed;
 }
 .pages_area {
-    margin-top: 10px;
+    margin-top: 0px;
     width: 100px;
     display: flex;
     justify-content: space-between;
@@ -119,12 +120,12 @@ td {
 .int_table_rows:hover .EOI {
     opacity: 1 !important;
     color: #3498db !important;
-    transition: .1s !important;
+    /*transition: .1s !important;*/
 }
 .int_table_rows:hover .DOOI {
     opacity: 1 !important;
     color: #e74c3c !important;
-    transition: .1s !important;
+    /*transition: .1s !important;*/
 }
 .int_table_rows:hover .edit_btn_cell,
 .int_table_rows:hover .dell_btn_cell {
@@ -136,9 +137,6 @@ td {
 }
 .int_table_rows:hover .save_btn_cell {
     background-color: #fff;
-}
-.EOI:hover, .DOOI:hover  {
-    box-shadow: 0px -2px 0px 0px #e67e22;
 }
 .int_table_input input {
     width: calc(100% - 10px);
@@ -154,6 +152,44 @@ td {
 .int_table_input td:nth-child(9) input {
     width: 13px;
 }
+.int_table_input #txt_field {
+    position: relative;
+    left: -1px;
+    width: calc(100% - 4px);
+    margin: 0;
+    /*background-color: #34495e;*/
+    border: none;
+}
+.int_table_input,
+.int_table_input input,
+.int_table_input select {
+    animation-name: flashing_row !important;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 0s;
+}
+.int_table_input .save_btn_cell {
+    background-color: #fff !important;
+}
+@keyframes flashing_row {
+    0% {
+        background-color: #fff;
+    }
+    25% {
+        background-color: #d1d7db;
+    }
+    50% {
+        background-color: #fff;
+    }
+    75% {
+        background-color: #d1d7db;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+
 
 /*.int_table_rows:hover td:nth-child(9),*/
 /*.int_table_rows:hover td:nth-child(10) {*/

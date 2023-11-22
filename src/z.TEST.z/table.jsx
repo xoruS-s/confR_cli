@@ -111,6 +111,15 @@ const View_table = () => {
         return name
     }
 
+
+
+    const [check, setCheck] = useState(false)
+    const handle_check_asd = (e) => {
+        const { name, value } = e.target;
+        console.log(name, value)
+        setCheck(!check)
+    }
+
     return (
         <>
             <table style={{ height: '300px', borderCollapse: 'collapse', textAlign: 'center' }}>
@@ -258,6 +267,17 @@ const View_table = () => {
                 }
             </table>
             <button onClick={handle_editing_selected_rows}>edit</button>*/}
+            <hr/>
+            <input
+                type={'checkbox'}
+                name={'asd'}
+                checked={check}
+                value={check}
+                onChange={e => handle_check_asd(e)}
+            />
+            <p>
+                {check ? 'true' : 'false'}
+            </p>
         </>
     )
 
