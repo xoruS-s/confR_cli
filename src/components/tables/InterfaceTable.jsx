@@ -25,7 +25,7 @@ const InterfaceTable = ({ data }) => {
         }
     }
     let count_pages = Math.ceil(rows.length / 10);
-    let range_table = [];
+    let range_table = []; // - основная (по страничная)
     let range_data = rows.map((el, i) => {
         return i % 10 === 0 ? rows.slice(i, i + 10) : [el];
     });
@@ -94,19 +94,66 @@ const InterfaceTable = ({ data }) => {
         });
     }
 
-    // - []
+    // - [Пустая строка]
     const add_empty_row = () => { //TODO:[19]
         const new_data = rows.concat({})
         set_rows(new_data)
         set_page_table(count_pages)
     }
 
+    // - [Обработчик выделения всех строк]
+    const [rows_checked, set_rows_checked] = useState([]);
+    const check_all_rows = async (e) => {
+        const { name, checked } = e.target
+
+        if (name === 'check_row_header') {
+            if (checked) {
+                for (const row of rows) {
+                    const row_check = {
+                        id: row.id,
+                        checked: true
+                    }
+                }
+            }
+        }
+    }
+    const handle_check_all_rows = (e, id_row) => {
+        const { name, checked } = e.target;
+
+        // if ()
+        // console.log(name, checked, id_row)
+    }
+
+    // = [Обработчик выделения строк]
+    const [selected_rows, set_selected_rows] = useState([]);
+    const handle_set_selected_rows = (e, id_row) => { //TODO: [26]
+        const { checked } = e.target;
+        const new_selected = [...selected_rows];
+
+        if (checked) {
+            new_selected.push(id_row)
+        }
+        else {
+            let index_row = selected_rows.indexOf(id_row)
+            new_selected.splice(index_row, 1)
+        }
+
+        set_selected_rows(new_selected)
+    }
+
+    console.log(selected_rows)
+
     return (
         <>
             <div style={{ height: '352px' }}>
                 <table className={'int_table'}>
                     <tr className={'int_table_header'} style={{ position: "relative" }}>
-                        <td><input type={'checkbox'}/></td>
+                        <td>
+                            <input
+                                type={'checkbox'}
+                                name={'check_row_header'}
+                            />
+                        </td>
                         <td>Интерфейс</td> <td>VLAN</td>
                         <td>Режим</td> <td>Voice VLAN</td>
                         <td>Spanning tree</td>
@@ -120,7 +167,10 @@ const InterfaceTable = ({ data }) => {
                                 return (
                                     <tr className={'int_table_input'}>
                                         <td style={{ width: '30px' }} key={v.id}>
-                                            <input type={'checkbox'}/>
+                                            <input
+                                                type={'checkbox'}
+                                                disabled
+                                            />
                                         </td>
                                         <td style={{ width: '160px' }}>
                                             <input
@@ -168,7 +218,7 @@ const InterfaceTable = ({ data }) => {
                                                         <option value={'trunk'}>trunk</option>
                                                     </>
                                                 ) }
-                                                { v.match === undefined && (
+                                                { v.mode === undefined && (
                                                     <>
                                                         <option value={'access'}>access</option>
                                                         <option value={'trunk'}>trunk</option>
@@ -232,7 +282,11 @@ const InterfaceTable = ({ data }) => {
                             return (
                                 <tr className={'int_table_rows'}>
                                     <td key={v.id} style={{ width: '30px' }}>
-                                        <input type={'checkbox'}/>
+                                        <input
+                                            type={'checkbox'}
+                                            name={'check_row'}
+                                            onChange={ e => handle_set_selected_rows(e, v.id) }
+                                        />
                                     </td>
                                     <td style={{ width: '160px' }}>{v.number}</td>
                                     <td style={{ width: '70px' }}>{v.access_vlan}</td>
