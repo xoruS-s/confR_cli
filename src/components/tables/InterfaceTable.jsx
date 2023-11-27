@@ -94,7 +94,7 @@ const InterfaceTable = ({ data }) => {
         });
     }
 
-    // - [Пустая строка]
+    // - [Новая пустая строка]
     const add_empty_row = () => { //TODO:[19]
         const new_data = rows.concat({})
         set_rows(new_data)
@@ -140,8 +140,7 @@ const InterfaceTable = ({ data }) => {
 
         set_selected_rows(new_selected)
     }
-
-    console.log(selected_rows)
+    const is_selected = id => selected_rows.includes(id)
 
     return (
         <>
