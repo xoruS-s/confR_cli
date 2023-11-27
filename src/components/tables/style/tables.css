@@ -190,13 +190,52 @@ td {
     }
 }
 
+/*REMOTE ACCESS TABLE*/
+.remote_access_table {
+    border-collapse: collapse;
+    font-family: Consolas, sans-serif;
+    text-align: center;
+    width: 550px;
+    border: 1px solid red;
+}
+.remote_access_table_header {
+    background-color: #34495e;
+    font-weight: 600;
+    color: white;
+    height: 40px;
+}
+.remote_access_table_rows {
+
+}
+.remote_access_table_rows:hover {
+    background-color: #bdc3c7;
+}
+.remote_access_table_rows:hover .EOI {
+    opacity: 1 !important;
+    color: #3498db !important;
+}
+.remote_access_table_rows:hover .DOOI {
+    opacity: 1 !important;
+    color: #e74c3c !important;
+}
+.remote_access_table_rows:hover .edit_btn_cell,
+.remote_access_table_rows:hover .dell_btn_cell {
+    background-color: #fff !important;
+}
+/*-------------------*/
 
 
-/*.int_table_rows:hover td:nth-child(9),*/
-/*.int_table_rows:hover td:nth-child(10) {*/
-/*    border-top: 1px solid grey !important;*/
-/*    border-bottom: 1px solid grey !important;*/
-/*}*/
+
+
+
+
+
+
+/*.int_table_rows:hover td:nth-child(9),
+.int_table_rows:hover td:nth-child(10) {
+    border-top: 1px solid grey !important;
+    border-bottom: 1px solid grey !important;
+}*/
 /*.add_column {
     position: absolute;
     top: -25px;
