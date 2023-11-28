@@ -196,7 +196,8 @@ td {
     font-family: Consolas, sans-serif;
     text-align: center;
     width: 550px;
-    border: 1px solid red;
+    padding: 0;
+    table-layout: fixed;
 }
 .remote_access_table_header {
     background-color: #34495e;
@@ -222,6 +223,51 @@ td {
 .remote_access_table_rows:hover .dell_btn_cell {
     background-color: #fff !important;
 }
+.remote_access_table_rows_edit {
+    height: 30px;
+    position: relative;
+}
+.remote_access_table_rows_edit td {
+    padding: 0;
+}
+.remote_access_table_rows_edit input {
+    width: calc(100% - 8px);
+    height: calc(100% - 4px);
+    border: none;
+    outline: none;
+    font-family: Consolas, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+.remote_access_table_rows_edit select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-family: Consolas, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+.remote_access_table_rows_edit .add_row {
+    position: absolute;
+    font-weight: bold;
+    width: 19px; height: 19px;
+    border-radius: 50%;
+    border: 1px solid #34495e;
+    top: calc(50% - 9.5px);
+    right: 50.5px;
+    font-size: 13px;
+    transition: .1s;
+}
+.remote_access_table_rows_edit .add_row:hover {
+    cursor: pointer;
+    background-color: #34495e;
+    color: white;
+}
+
+
 /*-------------------*/
 
 
