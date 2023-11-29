@@ -213,14 +213,14 @@ td {
 }
 .remote_access_table_rows:hover .EOI {
     opacity: 1 !important;
-    color: #3498db !important;
+    color: #0098db !important;
 }
 .remote_access_table_rows:hover .DOOI {
     opacity: 1 !important;
     color: #e74c3c !important;
 }
 .remote_access_table_rows:hover .edit_btn_cell,
-.remote_access_table_rows:hover .dell_btn_cell {
+.remote_access_table_rows:hover .delete_btn_cell {
     background-color: #fff !important;
 }
 .remote_access_table_rows_edit {

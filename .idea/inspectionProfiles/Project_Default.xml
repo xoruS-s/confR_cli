@@ -20,5 +20,6 @@
       <option name="queries" value="trace,write,forEach,length,size" />
       <option name="updates" value="pop,push,shift,splice,unshift,add,insert,remove,reverse,copyWithin,fill,sort" />
     </inspection_tool>
+    <inspection_tool class="JSXDomNesting" enabled="true" level="INFORMATION" enabled_by_default="true" />
   </profile>
 </component>
