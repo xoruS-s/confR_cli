@@ -206,7 +206,7 @@ td {
     height: 40px;
 }
 .remote_access_table_rows {
-
+    height: 30px;
 }
 .remote_access_table_rows:hover {
     background-color: #bdc3c7;
