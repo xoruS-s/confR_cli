@@ -22,7 +22,12 @@ const RemoteAccessTable = () => { //TODO:[.28]
 
     // - [Добавление новой строки]
     const add_row = () => {
-        set_rows([...rows, new_row]);
+        if ((new_row.ip && new_row.mask && new_row.service) === undefined || '' ) {
+            alert('Не них*я. Все ячейки должны быть заполнены');
+        } else set_rows([...rows, new_row]);
+
+
+
     }
 
     // - [Подсчет кол-ва страниц, распределение элементов, пагинация]
@@ -103,10 +108,6 @@ const RemoteAccessTable = () => { //TODO:[.28]
         set_rows(new_rows)
     }
 
-    useEffect(() => {
-        console.log(rows)
-    }, [rows])
-
     return (
         <>
             <div style={{ height: '352px' }}>
@@ -120,7 +121,7 @@ const RemoteAccessTable = () => { //TODO:[.28]
                         <td style={{ width: '40px', backgroundColor: '#fff', border: 'none', padding: 0 }}></td>
                     </tr>
                     {
-                        range_table[page_table - 1] !== undefined && range_table[page_table - 1].map((v, i) => ( /*TODO:[.33]*/
+                        range_table[page_table - 1] !== undefined && range_table[page_table - 1].map((v, i) => ( /*TODO:[|+|.33]*/
                             v.id === editing_row ?
                                 (<tr key={v.id} className={'remote_access_table_rows_edit'}>
                                         <td style={{ width: '90px' }}>
@@ -149,7 +150,7 @@ const RemoteAccessTable = () => { //TODO:[.28]
                                             />
                                         </td>
                                         <td style={{ width: '80px' }}>
-                                            <select name={'service'} onChange={e => handle_change_editing(e)}>
+                                            <select name={'service'} onChange={e => handle_change_editing(e, v.id)}>
                                                 { v.service === 'snmp' && (
                                                     <>
                                                         <option value={v.service}>{v.service}</option>

@@ -4,6 +4,7 @@ import {TabContext, TabList, TabPanel} from "@mui/lab";
 import VlanTable from "./VlanTable";
 import InterfaceTable from "./InterfaceTable";
 import RemoteAccessTable from "./RemoteAccessTable";
+import Others from "../records/Ohers";
 
 const PandingTable = ({ state }) => {
     const [value, setValue] = React.useState('1');
@@ -25,6 +26,7 @@ const PandingTable = ({ state }) => {
                 <TabPanel style={{ padding: '0' }} value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
                 <TabPanel style={{ padding: '0' }} value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
                 <TabPanel style={{ padding: '0' }} value="3"><RemoteAccessTable/></TabPanel>
+                <TabPanel style={{ padding: '0' }} value="4"><Others/></TabPanel>
             </TabContext>
             {/*<button>save</button>*/}
         </div>
