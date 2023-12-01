@@ -1,10 +1,15 @@
-import React, {useState, useId, useEffect} from 'react';
+import React, { useState, useId, useEffect } from 'react';
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { v4 } from "uuid";
 
-const RemoteAccessTable = () => { //TODO:[.28]
+const RemoteAccessTable = () => { //TODO:[|+|.28]
+    // - [Очистка localStorage]
+    window.addEventListener('beforeunload', e => {
+        localStorage.clear();
+    });
+
     // - [Обновление данных]
     const [rows, set_rows] = useState([]);
 
@@ -21,13 +26,11 @@ const RemoteAccessTable = () => { //TODO:[.28]
     }
 
     // - [Добавление новой строки]
-    const add_row = () => {
-        if ((new_row.ip && new_row.mask && new_row.service) === undefined || '' ) {
-            alert('Не них*я. Все ячейки должны быть заполнены');
-        } else set_rows([...rows, new_row]);
-
-
-
+    const add_row = () => { //TODO:[.30]
+        /*// if ((new_row.ip && new_row.mask && new_row.service) === undefined || '' ) {
+        //     alert('Не них*я. Все ячейки должны быть заполнены');
+        // } else*/
+        set_rows([...rows, new_row]);
     }
 
     // - [Подсчет кол-ва страниц, распределение элементов, пагинация]
@@ -108,6 +111,21 @@ const RemoteAccessTable = () => { //TODO:[.28]
         set_rows(new_rows)
     }
 
+    // - [Обработчик перерисовки]
+    useEffect(() => {
+        const local_storage = JSON.parse(localStorage.getItem('remote_access_table'));
+        if (local_storage) {
+            set_rows(local_storage);
+        }
+    }, [])
+    useEffect(() => {
+        if (rows.length > 0) {
+            localStorage.setItem('remote_access_table', JSON.stringify(rows));
+        }
+    }, [rows])
+
+
+
     return (
         <>
             <div style={{ height: '352px' }}>
@@ -123,7 +141,7 @@ const RemoteAccessTable = () => { //TODO:[.28]
                     {
                         range_table[page_table - 1] !== undefined && range_table[page_table - 1].map((v, i) => ( /*TODO:[|+|.33]*/
                             v.id === editing_row ?
-                                (<tr key={v.id} className={'remote_access_table_rows_edit'}>
+                                (<tr key={v.id} className={'remote_access_table_rows_edit'}> {/* |Редактирование строки| */}
                                         <td style={{ width: '90px' }}>
                                             <input
                                                 type={'checkbox'}
@@ -193,7 +211,7 @@ const RemoteAccessTable = () => { //TODO:[.28]
                                         </td>
                                     </tr>)
                                 :
-                                (<tr key={v.id} className={'remote_access_table_rows'}>
+                                (<tr key={v.id} className={'remote_access_table_rows'}> {/* |Исходная строка| */}
                                         <td style={{ width: '90px' }}>
                                             <input
                                                 type={'checkbox'}
@@ -221,7 +239,7 @@ const RemoteAccessTable = () => { //TODO:[.28]
                                     </tr>)
                         ))
                     }
-                    {
+                    { /* |Добавление новой строки| */
                         (page_table === count_pages ||  count_pages === 0) && (
                             <tr className={'remote_access_table_rows_edit'}>{/*TODO:[.2]|[.31]*/}
                                 <td style={{ width: '90px' }}>
