@@ -5,6 +5,7 @@ import VlanTable from "./VlanTable";
 import InterfaceTable from "./InterfaceTable";
 import RemoteAccessTable from "./RemoteAccessTable";
 import Others from "../records/Ohers";
+import PreviewConfig from "../preview_config/PreviewConfig";
 
 const PandingTable = ({ state }) => {
     const [value, setValue] = React.useState('1');
@@ -21,12 +22,14 @@ const PandingTable = ({ state }) => {
                         <Tab label="Порты" value="2" />
                         <Tab label="Удаленный доступ" value="3" />
                         <Tab label="Другое" value="4" />
+                        <Tab label="📄 Сохранить" value="5" />
                     </TabList>
                 </Box>
                 <TabPanel style={{ padding: '0' }} value="1"><VlanTable data={state['data_vlan']}/></TabPanel>
                 <TabPanel style={{ padding: '0' }} value="2"><InterfaceTable data={state['data_interface']}/></TabPanel>
                 <TabPanel style={{ padding: '0' }} value="3"><RemoteAccessTable/></TabPanel>
                 <TabPanel style={{ padding: '0' }} value="4"><Others/></TabPanel>
+                <TabPanel style={{ padding: '0' }} value="5"><PreviewConfig/></TabPanel>
             </TabContext>
             {/*<button>save</button>*/}
         </div>

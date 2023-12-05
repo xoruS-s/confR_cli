@@ -1,9 +1,58 @@
-
-
 .wrapper {
-    height: 352px;
-    /*border: 1px solid green;*/
+    height: 380px;
 }
+
+.vlan_table {
+    border-collapse: collapse;
+    font-family: Consolas, sans-serif;
+    text-align: center;
+    width: 470px;
+    padding: 0;
+    table-layout: fixed;
+}
+.vlan_table_header {
+    background-color: #34495e;
+    font-weight: 600;
+    color: white;
+    height: 40px;
+}
+.vlan_table_header td {
+    padding: 0;
+}
+.vlan_table_header #col_1 {
+    width: 59px;
+}
+.vlan_table_header #col_2 {
+    width: 199px;
+}
+.vlan_table_header #col_3 {
+    width: 129px;
+}
+.vlan_table_header #empty_col {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    width: 40px;
+}
+.vlan_table_rows {
+    height: 30px;
+}
+.vlan_table_rows:hover {
+    background-color: #bdc3c7;
+}
+.vlan_table_rows #col_edit,
+.vlan_table_rows #col_delete {
+    width: 40px;
+    border: none;
+}
+
+/*.vlan_table_rows #col_1 {*/
+/*    width: 100px;*/
+/*}*/
+
+
+
 .UC_vlan_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
@@ -11,22 +60,15 @@
     text-align: center;
     /*margin: 50px auto;*/
 }
-
 .UC_vlan_table caption {
     margin: 10px 0;
     font-weight: bold;
     font-size: 20px;
 }
-
-
 td {
     border: 1px solid gray;
     height: 25px;
 }
-/*td:nth-child(6), td:nth-child(7) {*/
-/*    border: none;*/
-/*    width: 30px;*/
-/*}*/
 
 .UC_vlan_table_header td { /*Заголовки*/
     background-color: #34495e;

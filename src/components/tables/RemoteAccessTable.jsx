@@ -3,6 +3,7 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { v4 } from "uuid";
+import PreviewConfig from "../preview_config/PreviewConfig";
 
 const RemoteAccessTable = () => { //TODO:[|+|.28]
     // - [Очистка localStorage]
@@ -27,16 +28,19 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
 
     // - [Добавление новой строки]
     const add_row = () => { //TODO:[.30]
-        /*// if ((new_row.ip && new_row.mask && new_row.service) === undefined || '' ) {
-        //     alert('Не них*я. Все ячейки должны быть заполнены');
-        // } else*/
         set_rows([...rows, new_row]);
+        set_new_row({
+            ip: '',
+            permit: false,
+            mask: '',
+            service: ''
+        }); // - [Обнуление новой строки]
     }
 
     // - [Подсчет кол-ва страниц, распределение элементов, пагинация]
     const [page_table, set_page_table] = useState(1);
     const count_pages = Math.ceil(rows.length / 10);
-    const range_table = []; // - основная (по страничная)
+    const range_table = []; // - основная (постраничная)
     const range_data = rows.map((el, i) => {
         return i % 10 === 0 ? rows.slice(i, i + 10) : [el];
     });
@@ -128,7 +132,7 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
 
     return (
         <>
-            <div style={{ height: '352px' }}>
+            <div className={'wrapper'}>
                 <table className={'remote_access_table'}>
                     <tr className={'remote_access_table_header'}>
                         <td style={{ width: '89px', padding: 0 }}>Разрешить</td>
@@ -139,7 +143,7 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
                         <td style={{ width: '40px', backgroundColor: '#fff', border: 'none', padding: 0 }}></td>
                     </tr>
                     {
-                        range_table[page_table - 1] !== undefined && range_table[page_table - 1].map((v, i) => ( /*TODO:[|+|.33]*/
+                        range_table[page_table - 1] !== undefined && range_table[page_table - 1].map(v => ( /*TODO:[|+|.33]*/
                             v.id === editing_row ?
                                 (<tr key={v.id} className={'remote_access_table_rows_edit'}> {/* |Редактирование строки| */}
                                         <td style={{ width: '90px' }}>
@@ -236,7 +240,7 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
                                                 onClick={() => delete_row(v.id)}
                                             />
                                         </td>
-                                    </tr>)
+                                </tr>)
                         ))
                     }
                     { /* |Добавление новой строки| */
@@ -248,22 +252,25 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
                                         style={{ width: '13px', height: '13px' }}
                                         name={'permit'}
                                         onChange={e => handler_new_row(e)}
+                                        checked={ new_row !== null ? new_row.permit : false }
                                     />
                                 </td>
                                 <td style={{ width: '150px' }}>
                                     <input
                                         name={'ip'}
                                         onChange={e => handler_new_row(e)}
+                                        value={ new_row !== null ? new_row.ip : '' }
                                     />
                                 </td>
                                 <td style={{ width: '150px' }}>
                                     <input
                                         name={'mask'}
                                         onChange={e => handler_new_row(e)}
+                                        value={ new_row !== null ? new_row.mask : '' }
                                     />
                                 </td>
                                 <td style={{ width: '80px' }}>
-                                    <select name={'service'} onChange={e => handler_new_row(e)}>
+                                    <select name={'service'} onChange={e => handler_new_row(e)} value={ new_row !== null ? new_row.service : '' }>
                                         <option></option> {/*TODO:[.30]*/}
                                         <option value={'snmp'}>snmp</option>
                                         <option value={'ssh'}>ssh</option>
@@ -357,6 +364,7 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
                         <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                 }
             </div>
+            <PreviewConfig remote_access_data={rows}/>
         </>
     );
 };

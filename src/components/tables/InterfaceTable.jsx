@@ -144,7 +144,7 @@ const InterfaceTable = ({ data }) => {
 
     return (
         <>
-            <div style={{ height: '352px' }}>
+            <div className={'wrapper'}>
                 <table className={'int_table'}>
                     <tr className={'int_table_header'} style={{ position: "relative" }}>
                         <td>
