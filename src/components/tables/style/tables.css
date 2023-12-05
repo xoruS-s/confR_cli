@@ -1,7 +1,32 @@
 .wrapper {
     height: 380px;
 }
+.EOI, .DOOI {
+    opacity: 0;
+    font-size: 20px !important;
+    cursor: pointer;
+}
+.EOI {
+    color: #0098db;
+}
+.DOOI {
+    color: #c0392b;
+}
+.EOI:hover {
+    color: #00648c !important;
+    transition: .1s;
+}
+.DOOI:hover {
+    color: #8b0000!important;
+    transition: .1s;
+}
+td {
+    border: 1px solid gray;
+    height: 25px;
+}
 
+
+/*-------------------------------------|VLAN TABLE| */
 .vlan_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
@@ -38,65 +63,42 @@
 .vlan_table_rows {
     height: 30px;
 }
-.vlan_table_rows:hover {
-    background-color: #bdc3c7;
-}
 .vlan_table_rows #col_edit,
 .vlan_table_rows #col_delete {
     width: 40px;
     border: none;
 }
-
-/*.vlan_table_rows #col_1 {*/
-/*    width: 100px;*/
-/*}*/
-
-
-
-.UC_vlan_table {
-    border-collapse: collapse;
-    font-family: Consolas, sans-serif;
-    width: 700px;
-    text-align: center;
-    /*margin: 50px auto;*/
+.vlan_table_rows_edit {
+    height: 30px;
 }
-.UC_vlan_table caption {
-    margin: 10px 0;
-    font-weight: bold;
-    font-size: 20px;
-}
-td {
-    border: 1px solid gray;
-    height: 25px;
-}
-
-.UC_vlan_table_header td { /*Заголовки*/
-    background-color: #34495e;
-    font-weight: 600;
-    color: white;
-    height: 40px;
-}
-.UC_vlan_table_header td:first-child {
-    width: 80px;
-}
-.UC_vlan_table_header td:last-child {
-    width: 150px;
-}
-.UC_vlan_table_row:hover {
-    background-color: #bdc3c7;
-}
-.vlan_table_input input {
-    width: calc(100% - 3px);
-    height: 100%;
+.vlan_table_rows_edit input {
+    width: calc(100% - 8px);
+    height: calc(100% - 4px);
     border: none;
     outline: none;
     font-family: Consolas, sans-serif;
     font-size: 16px;
     text-align: center;
+    margin: 0;
 }
-.td_edit_btn:hover .edit_btn {
-    color: red;
+
+.vlan_table_rows:hover {
+    background-color: #bdc3c7;
 }
+.vlan_table_rows:hover #col_edit,
+.vlan_table_rows:hover #col_delete {
+    background-color: #fff;
+}
+.vlan_table_rows:hover .EOI {
+    opacity: 1;
+    color: #3498db;
+}
+.vlan_table_rows:hover .DOOI {
+    opacity: 1;
+    color: #e74c3c;
+}
+/*--------------------------------------------------*/
+
 
 /*Interface table*/
 .int_table {
@@ -153,9 +155,6 @@ td {
 }
 .int_table_rows:hover {
     background-color: #bdc3c7;
-}
-.EOI, .DOOI {
-    opacity: 0;
 }
 .int_table_rows:hover .select_mode {
     background-color: #bdc3c7;

@@ -118,25 +118,25 @@ const VlanTable = ({ data }) => {
     })
 
     // - [Обработчик перерисовки]
-    useEffect(() => {
-        const local_storage = JSON.parse(localStorage.getItem('vlan_table'));
-        console.log(local_storage)
-        if (local_storage) {
-            setRows(local_storage);
-        }
+    // useEffect(() => {
+    //     const local_storage = JSON.parse(localStorage.getItem('vlan_table'));
+    //     console.log(local_storage)
+    //     if (local_storage) {
+    //         setRows(local_storage);
+    //     }
+    //
+    //     for (const row of rows) {
+    //         set_id_vlan([...id_vlan, row.id])
+    //     }
+    // }, [])
+    //
+    // useEffect(() => {
+    //     if (rows.length > 0) {
+    //         localStorage.setItem('vlan_table', JSON.stringify(rows));
+    //     }
+    // }, [rows])
 
-        for (const row of rows) {
-            set_id_vlan([...id_vlan, row.id])
-        }
-    }, [])
-
-    useEffect(() => {
-        if (rows.length > 0) {
-            localStorage.setItem('vlan_table', JSON.stringify(rows));
-        }
-    }, [rows])
-
-    console.log(rows)
+    // console.log(rows)
     return (
         <>
             <div className={'wrapper'}>
@@ -189,17 +189,11 @@ const VlanTable = ({ data }) => {
                                     <td id={'col_2'}>{v.description}</td>
                                     <td id={'col_3'}>{v.ipAddress}</td>
 
-                                    <td id={'col_edit'} onClick={() => { startEditing(v.id) }}>
-                                        <EditOutlinedIcon
-                                            className={'EOI'}
-                                            style={{ color: '#7f8c8d', fontSize: 20 }}
-                                        />
+                                    <td id={'col_edit'} onClick={() => startEditing(v.id)}>
+                                        <EditOutlinedIcon className={'EOI'}/>
                                     </td>
-                                    <td id={'col_delete'} onClick={ delete_row(v.id) }>
-                                        <DeleteOutlineOutlinedIcon
-                                            className={'DOOI'}
-                                            style={{color: '#c0392b', fontSize: 20}}
-                                        />
+                                    <td id={'col_delete'} onClick={() => delete_row(v.id)}>
+                                        <DeleteOutlineOutlinedIcon className={'DOOI'}/>
                                     </td>
                                 </tr>) // - |Исходная строка|
                         ))
@@ -208,27 +202,32 @@ const VlanTable = ({ data }) => {
                         (page_table === count_pages || count_pages === 0) && (
                             <tr className={'vlan_table_rows_edit'}>
                                 <td>
-                                    <input name="number"
-                                           onChange={handle_change_em_row}
-                                           value={vl_number}
-                                           autoComplete="off"/>
+                                    <input
+                                        name="number"
+                                        onChange={handle_change_em_row}
+                                        value={vl_number}
+                                        autoComplete="off"
+                                    />
                                 </td>
                                 <td>
-                                    <input name="description"
-                                           type={'text'}
-                                           onChange={handle_change_em_row}
-                                           value={vl_description}
-                                           autoComplete="off"/>
+                                    <input
+                                        name="description"
+                                        type={'text'}
+                                        onChange={handle_change_em_row}
+                                        value={vl_description}
+                                        autoComplete="off"
+                                    />
                                 </td>
                                 <td>
-                                    <input name="ipAddress"
-                                           onChange={handle_change_em_row}
-                                           value={vl_ip}
-                                           autoComplete="off"/>
+                                    <input
+                                        name="ipAddress"
+                                        onChange={handle_change_em_row}
+                                        value={vl_ip}
+                                        autoComplete="off"
+                                    />
                                 </td>
                                 <td style={{width: '30px', border: 'none', paddingTop: '2px'}}>
-                                    <AddBoxOutlinedIcon onClick={add_em_row}
-                                                        style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
+                                    <AddBoxOutlinedIcon onClick={add_em_row} style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
                                 </td>
                             </tr>
                         )
