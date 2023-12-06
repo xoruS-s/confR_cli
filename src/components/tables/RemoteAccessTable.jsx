@@ -3,7 +3,6 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { v4 } from "uuid";
-import PreviewConfig from "../preview_config/PreviewConfig";
 
 const RemoteAccessTable = () => { //TODO:[|+|.28]
     // - [Очистка localStorage]
@@ -127,7 +126,6 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
             localStorage.setItem('remote_access_table', JSON.stringify(rows));
         }
     }, [rows])
-
 
 
     return (
@@ -364,7 +362,6 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
                         <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                 }
             </div>
-            <PreviewConfig remote_access_data={rows}/>
         </>
     );
 };

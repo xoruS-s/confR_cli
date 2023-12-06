@@ -5,27 +5,79 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import Button from '@mui/material/Button';
 
+import PagesArea from "../pages_area/PagesArea";
+
 import './style/tables.css';
 import PreviewConfig from "../preview_config/PreviewConfig";
+import {v4} from "uuid";
+
+import handler_table from '../../containers/tables'
 
 const VlanTable = ({ data }) => {
+    // - [Очистка localStorage]
+    window.addEventListener('beforeunload', e => {
+        localStorage.clear();
+    });
 
+    // - [Обновление данных]
+    const local_storage = JSON.parse(localStorage.getItem('vlan_table'));
+    const [rows, set_rows] = useState(local_storage ? local_storage : data);
 
+    // - [Обработчик данных новой строки]
+    const [new_row, set_new_row] = useState({});
+    const handler_new_row = (e) => {
+        const { name, value } = e.target;
 
-    const [rows, setRows] = useState(data);
-    const [editingRow, setEditingRow] = useState(null);
-
-    const [id_vlan, set_id_vlan] = useState([]);
-    const [sorting_rows, set_sorting_rows] = useState([]);
-    const [vl_number, set_vl_number] = useState('');
-    const [vl_description, set_vl_description] = useState('');
-    const [vl_ip, set_vl_ip] = useState('');
-    const [page_table, set_page_table] = useState(1);
-
-    const delete_row = (id) => {
-        const newRows = rows.filter(row => row.id !== id);
-        setRows(newRows)
+        set_new_row({
+            ...new_row,
+            id: v4(),
+            [name]: value
+        })
     }
+
+    // - [Добавление новой строки]
+    const add_row = () => { //TODO:[.30]
+        set_rows([...rows, new_row]);
+        set_new_row({
+            number: '',
+            description: '',
+            ip: ''
+        }); // - [Обнуление новой строки]
+    }
+
+    // - [Подсчет кол-ва страниц, распределение элементов, пагинация]
+    const [page_table, set_page_table] = useState(1);
+    const count_pages = Math.ceil(rows.length / 10);
+    const range_table = []; // - основная (постраничная)
+    const range_data = rows.map((el, i) => {
+        return i % 10 === 0 ? rows.slice(i, i + 10) : [el];
+    });
+    const set_page = (e) => {
+        const { name } = e.target;
+
+        switch (name) {
+            case 'left':
+                if (page_table !== 1) {
+                    set_page_table(page_table - 1)
+                }
+                break;
+            case 'right':
+                if (page_table !== count_pages) {
+                    set_page_table(page_table + 1)
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    range_data.map((range, i) => {
+        if (i % 10 === 0) {
+            return range_table.push(range)
+        }
+    })
+
+    // - [Редактирование строк]
+    const [editingRow, setEditingRow] = useState(null);
     const startEditing = (rowId) => {
         if (editingRow === rowId) {
             return
@@ -37,7 +89,7 @@ const VlanTable = ({ data }) => {
     }
     const handleChange = (e, rowId) => {
         const { name, value } = e.target;
-        setRows(rows => {
+        set_rows(rows => {
             const rowIndex = rows.findIndex(r => r.id === rowId);
             const updatedRow = {
                 ...rows[rowIndex],
@@ -50,93 +102,29 @@ const VlanTable = ({ data }) => {
             ];
         });
     }
-    const handle_change_em_row = (e) => {
-        const { name, value } = e.target
 
-        switch (name) {
-            case ('number'):
-                set_vl_number(value)
-                break
-            case ('description'):
-                set_vl_description(value)
-                break
-            case ('ipAddress'):
-                set_vl_ip(value)
-                break
-        }
+    // - [Удаление строк]
+    const delete_row = (id) => {
+        const newRows = rows.filter(row => row.id !== id);
+        set_rows(newRows)
     }
-    const add_em_row = () => {
-        const new_row = {
-            id: vl_number,
-            number: vl_number,
-            description: vl_description,
-            ipAddress: vl_ip
-        }
-
-        for (const row of rows) {
-            if (new_row.id !== row.id) {
-                setRows([...rows, new_row]);
-                set_vl_number(''); set_vl_description(''); set_vl_ip('');
-
-
-                break
-            }
-            else {
-                alert('Такая херня уже существует!');
-                set_vl_number(''); set_vl_description(''); set_vl_ip('');
-            }
-        }
-
-        const sort_vlan = [...rows].sort((a, b) => a.id - b.id);
-        set_sorting_rows([...sort_vlan]);
-    }
-    const set_page = (e) => {
-        const { name } = e.target
-
-        if (name === 'left') {
-            if (page_table !== 1) {
-                set_page_table(page_table - 1)
-            }
-        }
-        if (name === 'right') {
-            if (page_table !== count_pages) {
-                set_page_table(page_table + 1)
-            }
-        }
-    }
-
-    let count_pages = Math.ceil(rows.length / 10);
-    let range_table = [];
-
-    let range_data = rows.map((el, i) => {
-        return i % 10 === 0 ? rows.slice(i, i + 10) : [el];
-    });
-    range_data.map((range, i) => {
-        if (i % 10 === 0) {
-            range_table.push(range)
-        }
-    })
 
     // - [Обработчик перерисовки]
     // useEffect(() => {
     //     const local_storage = JSON.parse(localStorage.getItem('vlan_table'));
-    //     console.log(local_storage)
     //     if (local_storage) {
-    //         setRows(local_storage);
-    //     }
-    //
-    //     for (const row of rows) {
-    //         set_id_vlan([...id_vlan, row.id])
+    //         set_rows(local_storage);
     //     }
     // }, [])
-    //
-    // useEffect(() => {
-    //     if (rows.length > 0) {
-    //         localStorage.setItem('vlan_table', JSON.stringify(rows));
-    //     }
-    // }, [rows])
+    useEffect(() => {
+        if (rows.length > 0 || rows !== data) {
+            localStorage.setItem('vlan_table', JSON.stringify(rows));
+        }
+    }, [rows])
 
-    // console.log(rows)
+    const ddd = handler_table('1', '2', '3', '4')
+    console.log(ddd)
+
     return (
         <>
             <div className={'wrapper'}>
@@ -170,8 +158,8 @@ const VlanTable = ({ data }) => {
                                     </td>
                                     <td>
                                         <input
-                                            name="ipAddress"
-                                            value={v.ipAddress}
+                                            name="ip"
+                                            value={v.ip}
                                             onChange={e => handleChange(e, v.id)}
                                             autoComplete="off"
                                         />
@@ -187,7 +175,7 @@ const VlanTable = ({ data }) => {
                                 (<tr key={v.id} className={'vlan_table_rows'}>
                                     <td id={'col_1'}>{v.number}</td>
                                     <td id={'col_2'}>{v.description}</td>
-                                    <td id={'col_3'}>{v.ipAddress}</td>
+                                    <td id={'col_3'}>{v.ip}</td>
 
                                     <td id={'col_edit'} onClick={() => startEditing(v.id)}>
                                         <EditOutlinedIcon className={'EOI'}/>
@@ -204,8 +192,9 @@ const VlanTable = ({ data }) => {
                                 <td>
                                     <input
                                         name="number"
-                                        onChange={handle_change_em_row}
-                                        value={vl_number}
+                                        type={'text'}
+                                        onChange={e => handler_new_row(e)}
+                                        value={ new_row !== null ? new_row.number : '' }
                                         autoComplete="off"
                                     />
                                 </td>
@@ -213,21 +202,22 @@ const VlanTable = ({ data }) => {
                                     <input
                                         name="description"
                                         type={'text'}
-                                        onChange={handle_change_em_row}
-                                        value={vl_description}
+                                        onChange={e => handler_new_row(e)}
+                                        value={ new_row !== null ? new_row.description : '' }
                                         autoComplete="off"
                                     />
                                 </td>
                                 <td>
                                     <input
-                                        name="ipAddress"
-                                        onChange={handle_change_em_row}
-                                        value={vl_ip}
+                                        name="ip"
+                                        type={'text'}
+                                        onChange={e => handler_new_row(e)}
+                                        value={ new_row !== null ? new_row.ip : '' }
                                         autoComplete="off"
                                     />
                                 </td>
                                 <td style={{width: '30px', border: 'none', paddingTop: '2px'}}>
-                                    <AddBoxOutlinedIcon onClick={add_em_row} style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
+                                    <AddBoxOutlinedIcon onClick={ add_row } style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
                                 </td>
                             </tr>
                         )
@@ -239,7 +229,7 @@ const VlanTable = ({ data }) => {
                     page_table !== 1 ?
                     <input
                         type={'button'}
-                        value={'<'}
+                        value={'❮'}
                         name={'left'}
                         onClick={set_page}
                         className={'arr_input'}
@@ -247,7 +237,7 @@ const VlanTable = ({ data }) => {
                     :
                     <input
                         type={'button'}
-                        value={'<'}
+                        value={'❮'}
                         name={'left'}
                         onClick={set_page}
                         className={'arr_input'}
@@ -265,7 +255,7 @@ const VlanTable = ({ data }) => {
                     page_table !== count_pages ?
                     <input
                         type={'button'}
-                        value={'>'}
+                        value={'❯'}
                         name={'right'}
                         onClick={set_page}
                         className={'arr_input'}
@@ -273,7 +263,7 @@ const VlanTable = ({ data }) => {
                     :
                     <input
                         type={'button'}
-                        value={'>'}
+                        value={'❯'}
                         name={'right'}
                         onClick={set_page}
                         className={'arr_input'}
