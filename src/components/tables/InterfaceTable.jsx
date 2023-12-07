@@ -1,12 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import { Icon } from '@mui/material';
+import { v4 } from "uuid";
+
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
+
 
 const InterfaceTable = ({ data }) => {
     // - [Обновление данных]
-    const [rows, set_rows] = useState(data)
+    const local_storage = JSON.parse(localStorage.getItem('interface_table'));
+    const [rows, set_rows] = useState(local_storage ? local_storage : data)
+
+    // - [Обработчик данных новой строки]
+    const [new_row, set_new_row] = useState({});
+    const handler_new_row = (e) => {
+        const { name, value, checked } = e.target;
+
+        set_new_row({
+            ...new_row,
+            id: v4(),
+            [name]: name === 'lldp_optional_tlv' || name === 'lldp_med' ? checked : value
+        })
+    }
+
+    // - [Добавление новой строки]
+    const add_row = () => { //TODO:[.30]
+        set_rows([...rows, new_row]);
+        set_new_row({
+            number: '',
+            access_vlan: '',
+            mode: 'access',
+            voice_vlan: '',
+            spanning_tree: '',
+            description: '',
+            lldp_optional_tlv: false,
+            lldp_med: false
+        }); // - [Обнуление новой строки]
+    }
 
     // - [Подсчет количества страниц, распределение элементов, пагинация]
     const [page_table, set_page_table] = useState(1);
@@ -35,40 +68,21 @@ const InterfaceTable = ({ data }) => {
         }
     })
 
-    // - [Удаление строк]
-    const delete_row = (id) => {
-        const new_rows = rows.filter(row => row.id !== id);
-        set_rows(new_rows)
-    }
-
-    // - [Изменение строк]
+    // - [Редактирование строк]
     const [editing_row, set_editing_row] = useState(null);
-    const start_editing = (row_id) => {
-        if (editing_row === row_id) {
+    const start_editing = (rowId) => {
+        if (editing_row === rowId) {
             return
         }
-        set_editing_row(row_id);
+        set_editing_row(rowId);
     }
     const stop_editing = () => {
         set_editing_row(null);
-
-        // - Проверка на совпадения id и number, добавление нового id
-        for (const row of rows) {
-            if (row.id !== undefined) {
-                if (row.number !== row.id) {
-                    row.id = row.number
-                }
-            }
-            else {
-                Object.assign(row, {id: row.number})
-            }
-        }
     }
-    const handle_change_editing = (e, row_id) => {
+    const handler_editing_row = (e, rowId) => {
         const { name, value, checked, type } = e.target;
-
         set_rows(rows => {
-            const rowIndex = rows.findIndex(r => r.id === row_id);
+            const rowIndex = rows.findIndex(r => r.id === rowId);
             if (type === 'checkbox') {
                 const updatedRow = {
                     ...rows[rowIndex],
@@ -94,251 +108,345 @@ const InterfaceTable = ({ data }) => {
         });
     }
 
-    // - [Новая пустая строка]
-    const add_empty_row = () => { //TODO:[19]
-        const new_data = rows.concat({})
-        set_rows(new_data)
-        set_page_table(count_pages)
+    // - [Удаление строк]
+    const delete_row = (id) => {
+        const newRows = rows.filter(row => row.id !== id);
+        set_rows(newRows)
     }
 
-    // - [Обработчик выделения всех строк]
-    const [rows_checked, set_rows_checked] = useState([]);
-    const check_all_rows = async (e) => {
-        const { name, checked } = e.target
-
-        if (name === 'check_row_header') {
-            if (checked) {
-                for (const row of rows) {
-                    const row_check = {
-                        id: row.id,
-                        checked: true
-                    }
-                }
-            }
+    // - [Обработчик перерисовки]
+    useEffect(() => {
+        if (rows.length > 0 || rows !== data) {
+            localStorage.setItem('interface_table', JSON.stringify(rows));
         }
-    }
-    const handle_check_all_rows = (e, id_row) => {
-        const { name, checked } = e.target;
+    }, [rows])
 
-        // if ()
-        // console.log(name, checked, id_row)
-    }
 
-    // = [Обработчик выделения строк]
-    const [selected_rows, set_selected_rows] = useState([]);
-    const handle_set_selected_rows = (e, id_row) => { //TODO: [26]
-        const { checked } = e.target;
-        const new_selected = [...selected_rows];
-
-        if (checked) {
-            new_selected.push(id_row)
-        }
-        else {
-            let index_row = selected_rows.indexOf(id_row)
-            new_selected.splice(index_row, 1)
-        }
-
-        set_selected_rows(new_selected)
-    }
-    const is_selected = id => selected_rows.includes(id)
+    console.log(new_row)
+    // console.log(rows)
 
     return (
         <>
             <div className={'wrapper'}>
-                <table className={'int_table'}>
-                    <tr className={'int_table_header'} style={{ position: "relative" }}>
-                        <td>
+                <table className={'interface_table'}>
+                    <tr className={'interface_table_header'}>
+                        <td id={'col_1'}>
                             <input
                                 type={'checkbox'}
                                 name={'check_row_header'}
                             />
                         </td>
-                        <td>Интерфейс</td> <td>VLAN</td>
-                        <td>Режим</td> <td>Voice VLAN</td>
-                        <td>Spanning tree</td>
-                        <td>Описание</td>
-                        <td>optional-tlv</td>
-                        <td>med</td>
+                        <td id={'col_2'}>Интерфейс</td>
+                        <td id={'col_3'}>VLAN</td>
+                        <td id={'col_4'}>Режим</td>
+                        <td id={'col_5'}>Voice VLAN</td>
+                        <td id={'col_6'}>Spanning tree</td>
+                        <td id={'col_7'}>Описание</td>
+                        <td id={'col_8'}>optional-tlv</td>
+                        <td id={'col_9'}>med</td>
+                        <td id={'empty_col'}></td>
+                        <td id={'empty_col'}></td>
                     </tr>
                     {
-                        range_table[page_table - 1].map(v => {
-                            if (v.id === editing_row) {
-                                return (
-                                    <tr className={'int_table_input'}>
-                                        <td style={{ width: '30px' }} key={v.id}>
-                                            <input
-                                                type={'checkbox'}
-                                                disabled
-                                            />
-                                        </td>
-                                        <td style={{ width: '160px' }}>
-                                            <input
-                                                name="number"
-                                                value={v.number}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                autoComplete="off"
-                                                id={'txt_field'}
-                                            />
-                                        </td>
-                                        <td style={{ width: '70px' }}>
-                                            <input
-                                                name="access_vlan"
-                                                value={v.access_vlan}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                autoComplete="off"
-                                                id={'txt_field'}
-                                            />
-                                        </td>
-                                        <td style={{ width: '100px' }}>
-                                            <select
-                                                name={'mode'}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                className={'select_mode'}
-                                                style={{ width: '100px' }}
-                                            >
-                                                { v.mode === 'access' && (
-                                                        <>
-                                                            <option value={v.mode}>{v.mode}</option>
-                                                            <option value={'trunk'}>trunk</option>
-                                                            <option value={'general'}>general</option>
-                                                        </>
-                                                    ) }
-                                                { v.mode === 'trunk' && (
-                                                    <>
-                                                        <option value={v.mode}>{v.mode}</option>
-                                                        <option value={'access'}>access</option>
-                                                        <option value={'general'}>general</option>
-                                                    </>
-                                                ) }
-                                                { v.mode === 'general' && (
-                                                    <>
-                                                        <option value={v.mode}>{v.mode}</option>
-                                                        <option value={'access'}>access</option>
-                                                        <option value={'trunk'}>trunk</option>
-                                                    </>
-                                                ) }
-                                                { v.mode === undefined && (
-                                                    <>
-                                                        <option value={'access'}>access</option>
-                                                        <option value={'trunk'}>trunk</option>
-                                                        <option value={'general'}>general</option>
-                                                    </>
-                                                ) }
-                                            </select>
-                                        </td>
-                                        <td style={{ width: '100px' }}>
-                                            <input
-                                                name="voice_vlan"
-                                                value={v.voice_vlan}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                autoComplete="off"
-                                                id={'txt_field'}
-                                            />
-                                        </td>
-                                        <td style={{ width: '130px' }}>
-                                            <input
-                                                name="spanning_tree"
-                                                value={v.spanning_tree}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                autoComplete="off"
-                                                id={'txt_field'}
-                                            />
-                                        </td>
-                                        <td style={{ width: '150px' }}>
-                                            <input
-                                                name="description"
-                                                value={v.description}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                                autoComplete="off"
-                                                id={'txt_field'}
-                                            />
-                                        </td>
-                                        <td style={{ width: '120px' }}>
-                                            <input
-                                                type={'checkbox'}
-                                                name={'lldp_optional_tlv'}
-                                                value={v.lldp_optional_tlv}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                            />
-                                        </td>
-                                        <td style={{ width: '50px' }}>
-                                            <input
-                                                type={'checkbox'}
-                                                name={'lldp_med'}
-                                                value={v.lldp_med}
-                                                onChange={e => handle_change_editing(e, v.id)}
-                                            />
-                                        </td>
-                                        <td className={'save_btn_cell'}>
-                                            <CheckCircleOutlinedIcon
-                                                style={{color: '#27ae60', fontSize: 20, cursor: 'pointer'}}
-                                                onClick={stop_editing}
-                                            />
-                                        </td>
-                                    </tr>
-                                )
-                            }
-                            return (
-                                <tr className={'int_table_rows'}>
-                                    <td key={v.id} style={{ width: '30px' }}>
+                        range_table[page_table - 1].map(v => (
+                            v.id === editing_row ?
+                                (<tr key={v.id} className={'interface_table_rows_edit'}>
+                                    <td>
+                                        <input
+                                            type={'checkbox'}
+                                            disabled
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="number"
+                                            value={v.number}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            autoComplete="off"
+                                            id={'txt_field'}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="access_vlan"
+                                            value={v.access_vlan}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            autoComplete="off"
+                                            id={'txt_field'}
+                                        />
+                                    </td>
+                                    <td>
+                                        <select
+                                            name={'mode'}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            className={'select_mode'}
+                                            style={{ width: '100px' }}
+                                        >
+                                            { v.mode === 'access' && (
+                                                <>
+                                                    <option value={v.mode}>{v.mode}</option>
+                                                    <option value={'trunk'}>trunk</option>
+                                                    <option value={'general'}>general</option>
+                                                </>
+                                            ) }
+                                            { v.mode === 'trunk' && (
+                                                <>
+                                                    <option value={v.mode}>{v.mode}</option>
+                                                    <option value={'access'}>access</option>
+                                                    <option value={'general'}>general</option>
+                                                </>
+                                            ) }
+                                            { v.mode === 'general' && (
+                                                <>
+                                                    <option value={v.mode}>{v.mode}</option>
+                                                    <option value={'access'}>access</option>
+                                                    <option value={'trunk'}>trunk</option>
+                                                </>
+                                            ) }
+                                            { v.mode === undefined && (
+                                                <>
+                                                    <option value={'access'}>access</option>
+                                                    <option value={'trunk'}>trunk</option>
+                                                    <option value={'general'}>general</option>
+                                                </>
+                                            ) }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="voice_vlan"
+                                            value={v.voice_vlan}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            autoComplete="off"
+                                            id={'txt_field'}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="spanning_tree"
+                                            value={v.spanning_tree}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            autoComplete="off"
+                                            id={'txt_field'}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            name="description"
+                                            value={v.description}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                            autoComplete="off"
+                                            id={'txt_field'}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type={'checkbox'}
+                                            name={'lldp_optional_tlv'}
+                                            value={v.lldp_optional_tlv}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type={'checkbox'}
+                                            name={'lldp_med'}
+                                            value={v.lldp_med}
+                                            onChange={e => handler_editing_row(e, v.id)}
+                                        />
+                                    </td>
+                                    <td id={'col_save'}>
+                                        <LibraryAddCheckOutlinedIcon
+                                            id={'btn_save'}
+                                            onClick={stop_editing}
+                                        />
+                                    </td>
+                                </tr>) // - |Редактирование строки|
+                                :
+                                (<tr key={v.id} className={'interface_table_rows'}>
+                                    <td>
                                         <input
                                             type={'checkbox'}
                                             name={'check_row'}
-                                            onChange={ e => handle_set_selected_rows(e, v.id) }
+                                            // onChange={ e => handle_set_selected_rows(e, v.id) }
                                         />
                                     </td>
-                                    <td style={{ width: '160px' }}>{v.number}</td>
-                                    <td style={{ width: '70px' }}>{v.access_vlan}</td>
-                                    <td style={{ width: '100px' }}>{v.mode}</td>
-                                    <td style={{ width: '100px' }}>{v.voice_vlan}</td>
-                                    <td style={{ width: '130px' }}>{v.spanning_tree}</td>
-                                    <td style={{ width: '150px' }}>{v.description}</td>
-                                    <td style={{ width: '120px' }}><input type={'checkbox'} disabled/></td>
-                                    <td style={{ width: '50px' }}><input type={'checkbox'} disabled/></td>
-                                    <td style={{border: 'none'}} className={'edit_btn_cell'}>
+                                    <td>{v.number}</td>
+                                    <td>{v.access_vlan}</td>
+                                    <td>{v.mode}</td>
+                                    <td>{v.voice_vlan}</td>
+                                    <td>{v.spanning_tree}</td>
+                                    <td>{v.description}</td>
+                                    <td>
+                                        <input
+                                            type={'checkbox'}
+                                            checked={v.lldp_optional_tlv}
+                                            disabled
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type={'checkbox'}
+                                            checked={v.lldp_med}
+                                            disabled
+                                        />
+                                    </td>
+                                    <td id={'col_edit'}>
                                         <EditOutlinedIcon
                                             className={'EOI'}
-                                            style={{color: '#7f8c8d', fontSize: 20, cursor: 'pointer'}}
                                             onClick={() => start_editing(v.id)}
                                         />
                                     </td>
-                                    <td style={{border: 'none'}} className={'dell_btn_cell'}>
+                                    <td id={'col_delete'}>
                                         <DeleteOutlineOutlinedIcon
                                             className={'DOOI'}
-                                            style={{color: '#c0392b', fontSize: 20, cursor: 'pointer'}}
                                             onClick={() => delete_row(v.id)}
                                         />
                                     </td>
-                                </tr>
-                            )
-                        })
+                                </tr>) // - |Исходная строка|
+                        ))
+                    }
+                    {   /* |Добавление новой строки| */
+                        (page_table === count_pages || count_pages === 0) && (
+                            <tr className={'interface_table_rows_edit'}>
+                                <td>
+                                    <input
+                                        type={'checkbox'}
+                                        disabled
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name="number"
+                                        value={new_row ? new_row.number : ''}
+                                        onChange={e => handler_new_row(e)}
+                                        autoComplete="off"
+                                        id={'txt_field'}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name="access_vlan"
+                                        value={new_row ? new_row.access_vlan : ''}
+                                        onChange={e => handler_new_row(e)}
+                                        autoComplete="off"
+                                        id={'txt_field'}
+                                    />
+                                </td>
+                                <td>
+                                    <select
+                                        name={'mode'}
+                                        onChange={e => handler_new_row(e)}
+                                        className={'select_mode'}
+                                        style={{ width: '100px' }}
+                                    >
+                                        { new_row && new_row.mode === 'access' && (
+                                            <>
+                                                <option value={new_row.mode}>{new_row.mode}</option>
+                                                <option value={'trunk'}>trunk</option>
+                                                <option value={'general'}>general</option>
+                                            </>
+                                        ) }
+                                        { new_row && new_row.mode === 'trunk' && (
+                                            <>
+                                                <option value={new_row.mode}>{new_row.mode}</option>
+                                                <option value={'access'}>access</option>
+                                                <option value={'general'}>general</option>
+                                            </>
+                                        ) }
+                                        { new_row && new_row.mode === 'general' && (
+                                            <>
+                                                <option value={new_row.mode}>{new_row.mode}</option>
+                                                <option value={'access'}>access</option>
+                                                <option value={'trunk'}>trunk</option>
+                                            </>
+                                        ) }
+                                        { new_row && new_row.mode === undefined && (
+                                            <>
+                                                <option value={'access'}>access</option>
+                                                <option value={'trunk'}>trunk</option>
+                                                <option value={'general'}>general</option>
+                                            </>
+                                        ) }
+                                    </select>
+                                </td>
+                                <td>
+                                    <input
+                                        name="voice_vlan"
+                                        value={ new_row ? new_row.voice_vlan : '' }
+                                        onChange={e => handler_new_row(e)}
+                                        autoComplete="off"
+                                        id={'txt_field'}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name="spanning_tree"
+                                        value={new_row ? new_row.spanning_tree : ''}
+                                        onChange={e => handler_new_row(e)}
+                                        autoComplete="off"
+                                        id={'txt_field'}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        name="description"
+                                        value={new_row ? new_row.description : ''}
+                                        onChange={e => handler_new_row(e)}
+                                        autoComplete="off"
+                                        id={'txt_field'}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type={'checkbox'}
+                                        name={'lldp_optional_tlv'}
+                                        checked={ new_row ? new_row.lldp_optional_tlv : false }
+                                        onChange={e => handler_new_row(e)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type={'checkbox'}
+                                        name={'lldp_med'}
+                                        checked={ new_row ? new_row.lldp_med : false }
+                                        onChange={e => handler_new_row(e)}
+                                    />
+                                </td>
+                                <td id={'col_add'}>
+                                    <AddBoxOutlinedIcon
+                                        id={'btn_add'}
+                                        onClick={add_row}
+                                    />
+                                </td>
+                            </tr>
+                        )
                     }
                 </table>
             </div>
+
+
+
+
+
+
+
+
             <div style={{ display: "flex", width: '938px', justifyContent: 'space-between' }}>
                 <div className={'pages_area'}>
                     {
                         page_table !== 1 ?
-                            <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'}/>
+                            <input type={'button'} value={'❮'} name={'left'} onClick={set_page} className={'arr_input'}/>
                             :
-                            <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'} disabled/>
+                            <input type={'button'} value={'❮'} name={'left'} onClick={set_page} className={'arr_input'} disabled/>
                     }
                     <input type={'button'} className={'page_view'} value={page_table}/>
                     {
                         page_table !== count_pages ?
-                            <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'}/>
+                            <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'}/>
                             :
-                            <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
+                            <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                     }
-                </div>
-                <div>
-                    <input
-                        type={'button'}
-                        value={'+'}
-                        style={{ width: '30px', height: '30px' }}
-                        onClick={add_empty_row}
-                        // disabled
-                    />
                 </div>
             </div>
         </>

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { v4 } from "uuid";
+
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import Button from '@mui/material/Button';
 
-import PagesArea from "../pages_area/PagesArea";
-
 import './style/tables.css';
-import PreviewConfig from "../preview_config/PreviewConfig";
-import {v4} from "uuid";
 
-import handler_table from '../../containers/tables'
 
 const VlanTable = ({ data }) => {
     // - [Очистка localStorage]
@@ -110,20 +107,13 @@ const VlanTable = ({ data }) => {
     }
 
     // - [Обработчик перерисовки]
-    // useEffect(() => {
-    //     const local_storage = JSON.parse(localStorage.getItem('vlan_table'));
-    //     if (local_storage) {
-    //         set_rows(local_storage);
-    //     }
-    // }, [])
     useEffect(() => {
         if (rows.length > 0 || rows !== data) {
             localStorage.setItem('vlan_table', JSON.stringify(rows));
         }
     }, [rows])
 
-    const ddd = handler_table('1', '2', '3', '4')
-    console.log(ddd)
+
 
     return (
         <>
@@ -216,7 +206,7 @@ const VlanTable = ({ data }) => {
                                         autoComplete="off"
                                     />
                                 </td>
-                                <td style={{width: '30px', border: 'none', paddingTop: '2px'}}>
+                                <td id={'col_save'} style={{width: '30px', border: 'none', paddingTop: '2px'}}>
                                     <AddBoxOutlinedIcon onClick={ add_row } style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
                                 </td>
                             </tr>

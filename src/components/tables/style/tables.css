@@ -4,21 +4,63 @@
 .EOI, .DOOI {
     opacity: 0;
     font-size: 20px !important;
+    color: grey;
     cursor: pointer;
 }
-.EOI {
-    color: #0098db;
-}
-.DOOI {
-    color: #c0392b;
-}
 .EOI:hover {
-    color: #00648c !important;
+    /*color: #00648c !important;*/
+    color: #0098db !important;
     transition: .1s;
 }
 .DOOI:hover {
-    color: #8b0000!important;
+    /*color: #8b0000!important;*/
+    color: #c0392b !important;
     transition: .1s;
+}
+.pages_area {
+    margin-top: 0;
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+.page_view {
+    pointer-events: none;
+    width: 30px;
+    height: 30px;
+    font-family: Consolas, sans-serif !important;
+}
+.arr_input {
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+}
+.arr_input:hover {
+    cursor: pointer;
+}
+.arr_input:disabled:hover {
+    cursor: not-allowed;
+}
+#col_edit, #col_delete, #col_save, #col_add {
+    width: 40px;
+    border: none;
+}
+#empty_col {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    width: 39px;
+}
+#btn_save, #btn_add {
+    color: grey;
+    font-size: 20px;
+    cursor: pointer;
+}
+#btn_save:hover {
+    color: #27ae60;
+}
+#btn_add:hover {
+    color: #c231b2;
 }
 td {
     border: 1px solid gray;
@@ -26,7 +68,8 @@ td {
 }
 
 
-/*-------------------------------------|VLAN TABLE| */
+
+/*-------------------------------------|VLAN TABLE|-*/
 .vlan_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
@@ -53,20 +96,8 @@ td {
 .vlan_table_header #col_3 {
     width: 129px;
 }
-.vlan_table_header #empty_col {
-    border: none;
-    padding: 0;
-    margin: 0;
-    background-color: #fff;
-    width: 40px;
-}
 .vlan_table_rows {
     height: 30px;
-}
-.vlan_table_rows #col_edit,
-.vlan_table_rows #col_delete {
-    width: 40px;
-    border: none;
 }
 .vlan_table_rows_edit {
     height: 30px;
@@ -89,24 +120,20 @@ td {
 .vlan_table_rows:hover #col_delete {
     background-color: #fff;
 }
-.vlan_table_rows:hover .EOI {
-    opacity: 1;
-    color: #3498db;
-}
+.vlan_table_rows:hover .EOI,
 .vlan_table_rows:hover .DOOI {
     opacity: 1;
-    color: #e74c3c;
 }
 /*--------------------------------------------------*/
 
 
-/*Interface table*/
+/*!*Interface table*!
 .int_table {
     border-collapse: collapse;
     font-family: Consolas, sans-serif;
     width: 1000px;
     text-align: center;
-    /*margin: 0 auto;*/
+    !*margin: 0 auto;*!
 }
 .int_table_header td {
     background-color: #34495e;
@@ -116,11 +143,6 @@ td {
 }
 .int_table_rows td {
     border: 1px solid grey;
-}
-.page_view {
-    pointer-events: none;
-    width: 30px;
-    height: 30px;
 }
 .arr_input {
     width: 30px;
@@ -149,7 +171,7 @@ td {
     height: 100%;
     outline: none;
     font-family: Consolas, sans-serif;
-    /*border: 1px solid #7f8c8d;*/
+    !*border: 1px solid #7f8c8d;*!
     border: none;
     text-align: center;
 }
@@ -162,12 +184,12 @@ td {
 .int_table_rows:hover .EOI {
     opacity: 1 !important;
     color: #3498db !important;
-    /*transition: .1s !important;*/
+    !*transition: .1s !important;*!
 }
 .int_table_rows:hover .DOOI {
     opacity: 1 !important;
     color: #e74c3c !important;
-    /*transition: .1s !important;*/
+    !*transition: .1s !important;*!
 }
 .int_table_rows:hover .edit_btn_cell,
 .int_table_rows:hover .dell_btn_cell {
@@ -196,10 +218,10 @@ td {
 }
 .int_table_input #txt_field {
     position: relative;
-    /*left: -1px;*/
+    !*left: -1px;*!
     width: calc(100% - 4px);
     margin: 0;
-    /*background-color: #34495e;*/
+    !*background-color: #34495e;*!
     border: none;
 }
 .int_table_input,
@@ -229,7 +251,97 @@ td {
     100% {
         background-color: #fff;
     }
+}*/
+
+/*--------------------------------|INTERFACE TABLE|-*/
+.interface_table {
+    border-collapse: collapse;
+    font-family: Consolas, sans-serif;
+    text-align: center;
+    width: 930px;
+    padding: 0;
+    table-layout: fixed;
 }
+.interface_table_header {
+    background-color: #34495e;
+    font-weight: 600;
+    color: white;
+    height: 40px;
+}
+.interface_table_header td {
+    padding: 0;
+}
+.interface_table_header #col_1 {
+    width: 39px;
+}
+.interface_table_header #col_2 {
+    width: 104px;
+}
+.interface_table_header #col_3 {
+    width: 59px;
+}
+.interface_table_header #col_4 {
+    width: 109px
+}
+.interface_table_header #col_5 {
+    width: 114px;
+}
+.interface_table_header #col_6 {
+    width: 129px;
+}
+.interface_table_header #col_7 {
+    width: 144px;
+}
+.interface_table_header #col_8 {
+    width: 124px;
+}
+.interface_table_header #col_9 {
+    width: 49px;
+}
+.interface_table_rows {
+    height: 30px;
+}
+.interface_table_rows_edit {
+    height: 30px;
+}
+.interface_table_rows_edit input {
+    width: calc(100% - 8px);
+    height: calc(100% - 4px);
+    border: none;
+    outline: none;
+    font-family: Consolas, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+.interface_table_rows_edit input[type='checkbox'] {
+    width: 13px;
+    height: 13px;
+}
+.interface_table_rows_edit select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-family: Consolas, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+
+.interface_table_rows:hover {
+    background-color: #bdc3c7;
+}
+.interface_table_rows:hover #col_edit,
+.interface_table_rows:hover #col_delete {
+    background-color: #fff;
+}
+.interface_table_rows:hover .EOI,
+.interface_table_rows:hover .DOOI {
+    opacity: 1;
+}
+/*--------------------------------------------------*/
+
 
 /*REMOTE ACCESS TABLE*/
 .remote_access_table {

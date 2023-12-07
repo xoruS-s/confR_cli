@@ -4,6 +4,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { v4 } from "uuid";
 
+
 const RemoteAccessTable = () => { //TODO:[|+|.28]
     // - [Очистка localStorage]
     window.addEventListener('beforeunload', e => {
@@ -126,6 +127,7 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
             localStorage.setItem('remote_access_table', JSON.stringify(rows));
         }
     }, [rows])
+
 
 
     return (
@@ -347,19 +349,19 @@ const RemoteAccessTable = () => { //TODO:[|+|.28]
             <div className={'pages_area'}>
                 {
                     page_table !== 1 ?
-                        <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'}/>
+                        <input type={'button'} value={'❮'} name={'left'} onClick={set_page} className={'arr_input'}/>
                         :
-                        <input type={'button'} value={'<'} name={'left'} onClick={set_page} className={'arr_input'} disabled/>
+                        <input type={'button'} value={'❮'} name={'left'} onClick={set_page} className={'arr_input'} disabled/>
                 }
                 <input type={'button'} className={'page_view'} value={page_table}/>
                 {
                     (page_table !== count_pages) ?
                         count_pages === 0 ?
-                            <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
+                            <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                             :
-                            <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'}/>
+                            <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'}/>
                         :
-                        <input type={'button'} value={'>'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
+                        <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                 }
             </div>
         </>
