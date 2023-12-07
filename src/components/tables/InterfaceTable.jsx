@@ -122,8 +122,6 @@ const InterfaceTable = ({ data }) => {
     }, [rows])
 
 
-    console.log(new_row)
-    // console.log(rows)
 
     return (
         <>

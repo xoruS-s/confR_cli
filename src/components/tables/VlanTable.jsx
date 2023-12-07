@@ -206,8 +206,11 @@ const VlanTable = ({ data }) => {
                                         autoComplete="off"
                                     />
                                 </td>
-                                <td id={'col_save'} style={{width: '30px', border: 'none', paddingTop: '2px'}}>
-                                    <AddBoxOutlinedIcon onClick={ add_row } style={{color: '#2980b9', fontSize: 20, cursor: 'pointer'}}/>
+                                <td id={'col_add'}>
+                                    <AddBoxOutlinedIcon
+                                        id={'btn_add'}
+                                        onClick={ add_row }
+                                    />
                                 </td>
                             </tr>
                         )
