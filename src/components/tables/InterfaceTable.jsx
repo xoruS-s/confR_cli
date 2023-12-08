@@ -121,7 +121,27 @@ const InterfaceTable = ({ data }) => {
         }
     }, [rows])
 
+    const [test_check, set_test_check] = useState([]);
+    useEffect(() => {
+        for (const row of rows) {
+            set_test_check([...test_check, {[row.id]:false}])
+        }
+    },[])
+    const handler_test_check = (e, id_row) => {
+        const { checked } = e.target;
+        const rowIndex = rows.findIndex(r => r.id === id_row);
 
+        const updatedRow = {
+            ...test_check[rowIndex],
+            [id_row]: checked
+        };
+        return [
+            ...test_check.slice(0, rowIndex),
+            updatedRow,
+            ...test_check.slice(rowIndex + 1)
+        ];
+    }
+    console.log(test_check)
 
     return (
         <>
@@ -266,6 +286,7 @@ const InterfaceTable = ({ data }) => {
                                         <input
                                             type={'checkbox'}
                                             name={'check_row'}
+                                            onChange={ e => handler_test_check(e, v.id) }
                                             // onChange={ e => handle_set_selected_rows(e, v.id) }
                                         />
                                     </td>
