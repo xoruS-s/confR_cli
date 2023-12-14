@@ -121,27 +121,46 @@ const InterfaceTable = ({ data }) => {
         }
     }, [rows])
 
+
+
     const [test_check, set_test_check] = useState([]);
     useEffect(() => {
-        for (const row of rows) {
-            set_test_check([...test_check, {[row.id]:false}])
-        }
+        rows.map(row => {
+            set_test_check(prev_state => [...prev_state, { [row.id]: false }])
+        })
     },[])
+
+    // const obj_arr = [
+    //     {'1/0/1': true},
+    //     {'1/0/2': false},
+    //     {'1/0/3': true},
+    // ]
+    // console.log(obj_arr.findIndex(row => Object.keys(row)[0] === '1/0/1'))
+    // // console.log(Object.keys(obj_arr[0])[0])
+
+
     const handler_test_check = (e, id_row) => {
         const { checked } = e.target;
-        const rowIndex = rows.findIndex(r => r.id === id_row);
 
-        const updatedRow = {
-            ...test_check[rowIndex],
-            [id_row]: checked
-        };
-        return [
-            ...test_check.slice(0, rowIndex),
-            updatedRow,
-            ...test_check.slice(rowIndex + 1)
-        ];
+        set_test_check(prev => {
+            const rowIndex = prev.findIndex(row => Object.keys(row)[0] === id_row);
+            const updatedRow = {
+                ...prev[rowIndex],
+                [id_row]: checked
+            };
+            return [
+                ...prev.slice(0, rowIndex),
+                updatedRow,
+                ...prev.slice(rowIndex + 1)
+            ];
+        })
+
     }
-    console.log(test_check)
+    useEffect(() => {
+        console.log(test_check)
+    }, [test_check])
+
+
 
     return (
         <>
