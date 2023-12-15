@@ -82,6 +82,14 @@ const InterfaceTable = ({ data }) => {
     }
     const handler_editing_row = (e, rowId) => {
         const { name, value, checked, type } = e.target;
+
+        // if (name === 'check_row_header') {
+        //     rows.map((row, i) => {
+        //         row.check_row = checked;
+        //     })
+        //     console.log(rows)
+        // }
+
         set_rows(rows => {
             const rowIndex = rows.findIndex(r => r.id === rowId);
             if (type === 'checkbox') {
@@ -178,6 +186,7 @@ const InterfaceTable = ({ data }) => {
                             <input
                                 type={'checkbox'}
                                 name={'check_row_header'}
+                                onChange={e => handler_editing_row(e)}
                             />
                         </td>
                         <td id={'col_2'}>Интерфейс</td>
