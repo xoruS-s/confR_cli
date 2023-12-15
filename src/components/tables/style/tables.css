@@ -177,6 +177,13 @@ td {
 .interface_table_rows {
     height: 30px;
 }
+.interface_table_rows.selected {
+    background-color: rgba(99, 110, 114, 0.4);
+}
+.interface_table_rows.selected #col_edit,
+.interface_table_rows.selected #col_delete{
+    background-color: #fff;
+}
 .interface_table_rows_edit {
     height: 30px;
 }
@@ -211,6 +218,9 @@ td {
 .interface_table_rows:hover #col_edit,
 .interface_table_rows:hover #col_delete {
     background-color: #fff;
+}
+.interface_table_rows.selected:hover {
+    background-color: rgba(99, 110, 114, 0.6);
 }
 .interface_table_rows:hover .EOI,
 .interface_table_rows:hover .DOOI {

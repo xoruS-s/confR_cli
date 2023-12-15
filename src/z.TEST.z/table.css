@@ -1,13 +1,13 @@
-.em_row {
-    height: calc(100% - 4px);
-}
+/*.em_row {*/
+/*    height: calc(100% - 4px);*/
+/*}*/
 
-.selected, .selected:hover {
-    background-color: aqua;
-}
-.clickable-row:hover {
-    background-color: aquamarine;
-}
-.input_range {
-    width: calc(100% - 4px);
-}
+/*.selected, .selected:hover {*/
+/*    !*background-color: aqua;*!*/
+/*}*/
+/*.clickable-row:hover {*/
+/*    !*background-color: aquamarine;*!*/
+/*}*/
+/*.input_range {*/
+/*    width: calc(100% - 4px);*/
+/*}*/

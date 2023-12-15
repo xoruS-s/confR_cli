@@ -22,6 +22,7 @@ const InterfaceTable = ({ data }) => {
         set_new_row({
             ...new_row,
             id: v4(),
+            selected: false,
             [name]: name === 'lldp_optional_tlv' || name === 'lldp_med' ? checked : value
         })
     }
@@ -122,6 +123,8 @@ const InterfaceTable = ({ data }) => {
     }, [rows])
 
 
+    const hasSelectedRow = rows.find(object => object.check_row === true);
+    console.log(hasSelectedRow)
 
     const [test_check, set_test_check] = useState([]);
     useEffect(() => {
@@ -129,7 +132,6 @@ const InterfaceTable = ({ data }) => {
             set_test_check(prev_state => [...prev_state, { [row.id]: false }])
         })
     },[])
-
     // const obj_arr = [
     //     {'1/0/1': true},
     //     {'1/0/2': false},
@@ -137,27 +139,29 @@ const InterfaceTable = ({ data }) => {
     // ]
     // console.log(obj_arr.findIndex(row => Object.keys(row)[0] === '1/0/1'))
     // // console.log(Object.keys(obj_arr[0])[0])
-
-
     const handler_test_check = (e, id_row) => {
-        const { checked } = e.target;
+        const { checked, name } = e.target;
 
-        set_test_check(prev => {
-            const rowIndex = prev.findIndex(row => Object.keys(row)[0] === id_row);
-            const updatedRow = {
-                ...prev[rowIndex],
-                [id_row]: checked
-            };
-            return [
-                ...prev.slice(0, rowIndex),
-                updatedRow,
-                ...prev.slice(rowIndex + 1)
-            ];
-        })
+        if (name !== 'check_row_header') {
+            set_test_check(prev => {
+                const rowIndex = prev.findIndex(row => Object.keys(row)[0] === id_row);
+                const updatedRow = {
+                    ...prev[rowIndex],
+                    [id_row]: checked
+                };
+                return [
+                    ...prev.slice(0, rowIndex),
+                    updatedRow,
+                    ...prev.slice(rowIndex + 1)
+                ];
+            })
+        }
+        else {
 
+        }
     }
     useEffect(() => {
-        console.log(test_check)
+        // console.log(test_check)
     }, [test_check])
 
 
@@ -191,6 +195,7 @@ const InterfaceTable = ({ data }) => {
                                     <td>
                                         <input
                                             type={'checkbox'}
+                                            checked={v.check_row}
                                             disabled
                                         />
                                     </td>
@@ -300,13 +305,14 @@ const InterfaceTable = ({ data }) => {
                                     </td>
                                 </tr>) // - |Редактирование строки|
                                 :
-                                (<tr key={v.id} className={'interface_table_rows'}>
+                                (<tr key={v.id} className={v.check_row === true ? 'interface_table_rows selected' : 'interface_table_rows'}>
                                     <td>
                                         <input
                                             type={'checkbox'}
                                             name={'check_row'}
-                                            onChange={ e => handler_test_check(e, v.id) }
-                                            // onChange={ e => handle_set_selected_rows(e, v.id) }
+                                            // checked={ Object.keys(test_check)[0] }
+                                            checked={v.check_row}
+                                            onChange={ e => handler_editing_row(e, v.id) }
                                         />
                                     </td>
                                     <td>{v.number}</td>
@@ -463,13 +469,6 @@ const InterfaceTable = ({ data }) => {
                 </table>
             </div>
 
-
-
-
-
-
-
-
             <div style={{ display: "flex", width: '938px', justifyContent: 'space-between' }}>
                 <div className={'pages_area'}>
                     {
@@ -487,6 +486,10 @@ const InterfaceTable = ({ data }) => {
                     }
                 </div>
             </div>
+
+            { (hasSelectedRow && (
+                <div>fewfwefw</div>
+            )) }
         </>
     );
 };
