@@ -132,7 +132,6 @@ const InterfaceTable = ({ data }) => {
 
     // - [Обработчик выделенных строк]
     const has_selected_row = rows.find(row => row.check_row); // - |Поиск хотя-бы одной выделенной строки|
-    const selected_rows = [];
 
 
 
