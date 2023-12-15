@@ -122,47 +122,50 @@ const InterfaceTable = ({ data }) => {
         }
     }, [rows])
 
+    // - [Обработчик выделенных строк]
+    const has_selected_row = rows.find(row => row.check_row); // - |Поиск хотя-бы одной выделенной строки|
+    const selected_rows = [];
 
-    const hasSelectedRow = rows.find(object => object.check_row === true);
-    console.log(hasSelectedRow)
 
-    const [test_check, set_test_check] = useState([]);
-    useEffect(() => {
-        rows.map(row => {
-            set_test_check(prev_state => [...prev_state, { [row.id]: false }])
-        })
-    },[])
-    // const obj_arr = [
-    //     {'1/0/1': true},
-    //     {'1/0/2': false},
-    //     {'1/0/3': true},
-    // ]
-    // console.log(obj_arr.findIndex(row => Object.keys(row)[0] === '1/0/1'))
-    // // console.log(Object.keys(obj_arr[0])[0])
-    const handler_test_check = (e, id_row) => {
-        const { checked, name } = e.target;
 
-        if (name !== 'check_row_header') {
-            set_test_check(prev => {
-                const rowIndex = prev.findIndex(row => Object.keys(row)[0] === id_row);
-                const updatedRow = {
-                    ...prev[rowIndex],
-                    [id_row]: checked
-                };
-                return [
-                    ...prev.slice(0, rowIndex),
-                    updatedRow,
-                    ...prev.slice(rowIndex + 1)
-                ];
-            })
-        }
-        else {
 
-        }
-    }
-    useEffect(() => {
-        // console.log(test_check)
-    }, [test_check])
+    // const [test_check, set_test_check] = useState([]);
+    // useEffect(() => {
+    //     rows.map(row => {
+    //         set_test_check(prev_state => [...prev_state, { [row.id]: false }])
+    //     })
+    // },[])
+    // // const obj_arr = [
+    // //     {'1/0/1': true},
+    // //     {'1/0/2': false},
+    // //     {'1/0/3': true},
+    // // ]
+    // // console.log(obj_arr.findIndex(row => Object.keys(row)[0] === '1/0/1'))
+    // // // console.log(Object.keys(obj_arr[0])[0])
+    // const handler_test_check = (e, id_row) => {
+    //     const { checked, name } = e.target;
+    //
+    //     if (name !== 'check_row_header') {
+    //         set_test_check(prev => {
+    //             const rowIndex = prev.findIndex(row => Object.keys(row)[0] === id_row);
+    //             const updatedRow = {
+    //                 ...prev[rowIndex],
+    //                 [id_row]: checked
+    //             };
+    //             return [
+    //                 ...prev.slice(0, rowIndex),
+    //                 updatedRow,
+    //                 ...prev.slice(rowIndex + 1)
+    //             ];
+    //         })
+    //     }
+    //     else {
+    //
+    //     }
+    // }
+    // useEffect(() => {
+    //     // console.log(test_check)
+    // }, [test_check])
 
 
 
@@ -469,7 +472,7 @@ const InterfaceTable = ({ data }) => {
                 </table>
             </div>
 
-            <div style={{ display: "flex", width: '938px', justifyContent: 'space-between' }}>
+            <div style={{ display: "flex", width: '881px', justifyContent: 'space-between' }}>
                 <div className={'pages_area'}>
                     {
                         page_table !== 1 ?
@@ -485,11 +488,18 @@ const InterfaceTable = ({ data }) => {
                             <input type={'button'} value={'❯'} name={'right'} onClick={set_page} className={'arr_input'} disabled/>
                     }
                 </div>
-            </div>
 
-            { (hasSelectedRow && (
-                <div>fewfwefw</div>
-            )) }
+                {
+                    (has_selected_row && (
+                        <input
+                            className={'multiple_editing_row_btn'}
+                            name={'multiple_edit_btn'}
+                            type={'button'}
+                            value={'Изменить'}
+                        />
+                    ))
+                }
+            </div>
         </>
     );
 };
