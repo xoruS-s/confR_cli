@@ -32,14 +32,29 @@ const VlanTable = ({ data }) => {
         })
     }
 
-    // - [Добавление новой строки]
-    const add_row = () => { //TODO:[.30]
-        set_rows([...rows, new_row]);
+    // - [Добавление и валидация новой строки ]
+    const add_row = () => {
+        // - [Проверка на пустые значения]
+        if (new_row.hasOwnProperty('number') && new_row.number !== '') {
+            // - [Проверка на существование VLAN]
+            const rowIndex = rows.findIndex(r => r.number === new_row.number);
+            if ({...rows[rowIndex]}.number !== new_row.number) {
+                set_rows([...rows, new_row]);
+                // [...rows].sort((a, b) => a.number - b.number)
+            }
+            else {
+                alert('Такой номер VLAN уже существует!')
+            }
+        }
+        else {
+            alert('Поле VLAN не может быть пустым!')
+        }
+
         set_new_row({
             number: '',
             description: '',
             ip: ''
-        }); // - [Обнуление новой строки]
+        }); // - |Обнуление новой строки|
     }
 
     // - [Подсчет кол-ва страниц, распределение элементов, пагинация]
@@ -113,6 +128,8 @@ const VlanTable = ({ data }) => {
         }
     }, [rows])
 
+    // - [Сортировка] //TODO: [3][!]
+    rows.sort((a, b) => a.number - b.number);
 
 
     return (
@@ -123,8 +140,8 @@ const VlanTable = ({ data }) => {
                         <td id={'col_1'}>Номер</td>
                         <td id={'col_2'}>Описание</td>
                         <td id={'col_3'}>IP Адрес</td>
-                        <td id={'empty_col'}></td>
-                        <td id={'empty_col'}></td>
+                        <td id={'empty_col'}/>
+                        <td id={'empty_col'}/>
                     </tr>
                     {
                         range_table[page_table - 1].map(v => (
