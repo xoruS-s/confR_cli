@@ -7,6 +7,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
+import SettingsPowerOutlinedIcon from '@mui/icons-material/SettingsPowerOutlined';
 
 
 const InterfaceTable = ({ data }) => {
@@ -123,6 +124,25 @@ const InterfaceTable = ({ data }) => {
         set_rows(newRows)
     }
 
+    // - [Обработчик выключения порта]
+    const [shutdown_rows, set_shutdown_rows] = useState([]);
+    const handler_is_shutdown = (row_id) => {
+        if (shutdown_rows.length === 0) {
+            set_shutdown_rows([{
+                id: row_id
+            }]);
+        }
+        else {
+            if (shutdown_rows.some(row => row.id === row_id)) {
+                const new_rows = shutdown_rows.filter(row => row.id !== row_id);
+                set_shutdown_rows(new_rows);
+            }
+            else {
+                set_shutdown_rows([...shutdown_rows, { id: row_id }]);
+            }
+        }
+    }
+
     // - [Обработчик перерисовки]
     useEffect(() => {
         if (rows.length > 0 || rows !== data) {
@@ -196,8 +216,8 @@ const InterfaceTable = ({ data }) => {
                         <td id={'col_7'}>Описание</td>
                         <td id={'col_8'}>optional-tlv</td>
                         <td id={'col_9'}>med</td>
-                        <td id={'empty_col'}></td>
-                        <td id={'empty_col'}></td>
+                        <td id={'empty_col'}/>
+                        <td id={'empty_col'}/>
                     </tr>
                     {
                         range_table[page_table - 1].map(v => (
@@ -316,49 +336,109 @@ const InterfaceTable = ({ data }) => {
                                     </td>
                                 </tr>) // - |Редактирование строки|
                                 :
-                                (<tr key={v.id} className={v.check_row === true ? 'interface_table_rows selected' : 'interface_table_rows'}>
-                                    <td>
-                                        <input
-                                            type={'checkbox'}
-                                            name={'check_row'}
-                                            // checked={ Object.keys(test_check)[0] }
-                                            checked={v.check_row}
-                                            onChange={ e => handler_editing_row(e, v.id) }
-                                        />
-                                    </td>
-                                    <td>{v.number}</td>
-                                    <td>{v.access_vlan}</td>
-                                    <td>{v.mode}</td>
-                                    <td>{v.voice_vlan}</td>
-                                    <td>{v.spanning_tree}</td>
-                                    <td>{v.description}</td>
-                                    <td>
-                                        <input
-                                            type={'checkbox'}
-                                            checked={v.lldp_optional_tlv}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type={'checkbox'}
-                                            checked={v.lldp_med}
-                                            disabled
-                                        />
-                                    </td>
-                                    <td id={'col_edit'}>
-                                        <EditOutlinedIcon
-                                            className={'EOI'}
-                                            onClick={() => start_editing(v.id)}
-                                        />
-                                    </td>
-                                    <td id={'col_delete'}>
-                                        <DeleteOutlineOutlinedIcon
-                                            className={'DOOI'}
-                                            onClick={() => delete_row(v.id)}
-                                        />
-                                    </td>
-                                </tr>) // - |Исходная строка|
+                                (shutdown_rows.some(row => row.id === v.id) ?
+                                    (<tr key={v.id} className={v.check_row === true ? 'interface_table_rows selected' : 'interface_table_rows'}>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                name={'check_row'}
+                                                // checked={ Object.keys(test_check)[0] }
+                                                checked={v.check_row}
+                                                onChange={ e => handler_editing_row(e, v.id) }
+                                                disabled
+                                            />
+                                        </td>
+                                        <td>{v.number}</td>
+                                        <td>{v.access_vlan}</td>
+                                        <td>{v.mode}</td>
+                                        <td>{v.voice_vlan}</td>
+                                        <td>{v.spanning_tree}</td>
+                                        <td>{v.description}</td>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                checked={v.lldp_optional_tlv}
+                                                disabled
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                checked={v.lldp_med}
+                                                disabled
+                                            />
+                                        </td>
+                                        <td id={'col_edit'}>
+                                            <EditOutlinedIcon
+                                                className={'EOI'}
+                                                onClick={() => start_editing(v.id)}
+                                            />
+                                        </td>
+                                        <td id={'col_delete'}>
+                                            <DeleteOutlineOutlinedIcon
+                                                className={'DOOI'}
+                                                onClick={() => delete_row(v.id)}
+                                            />
+                                        </td>
+                                        <td id={'col_shutdown'} style={{ position: 'absolute' }}>
+                                            <SettingsPowerOutlinedIcon
+                                                className={'SPOI'}
+                                                onClick={() => handler_is_shutdown(v.id)}
+                                            />
+                                        </td>
+                                        <td id={'row_shutdown'}>SHUT FUCKING DOWN</td>
+                                    </tr>)
+                                    :
+                                    (<tr key={v.id} className={v.check_row === true ? 'interface_table_rows selected' : 'interface_table_rows'}>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                name={'check_row'}
+                                                // checked={ Object.keys(test_check)[0] }
+                                                checked={v.check_row}
+                                                onChange={ e => handler_editing_row(e, v.id) }
+                                            />
+                                        </td>
+                                        <td>{v.number}</td>
+                                        <td>{v.access_vlan}</td>
+                                        <td>{v.mode}</td>
+                                        <td>{v.voice_vlan}</td>
+                                        <td>{v.spanning_tree}</td>
+                                        <td>{v.description}</td>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                checked={v.lldp_optional_tlv}
+                                                disabled
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type={'checkbox'}
+                                                checked={v.lldp_med}
+                                                disabled
+                                            />
+                                        </td>
+                                        <td id={'col_edit'}>
+                                            <EditOutlinedIcon
+                                                className={'EOI'}
+                                                onClick={() => start_editing(v.id)}
+                                            />
+                                        </td>
+                                        <td id={'col_delete'}>
+                                            <DeleteOutlineOutlinedIcon
+                                                className={'DOOI'}
+                                                onClick={() => delete_row(v.id)}
+                                            />
+                                        </td>
+                                        <td id={'col_shutdown'} style={{ position: 'absolute' }}>
+                                            <SettingsPowerOutlinedIcon
+                                                className={'SPOI'}
+                                                onClick={() => handler_is_shutdown(v.id)}
+                                            />
+                                        </td>
+                                    </tr>)
+                                ) // - |Исходная строка|
                         ))
                     }
                     {   /* |Добавление новой строки| */

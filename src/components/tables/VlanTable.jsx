@@ -38,9 +38,8 @@ const VlanTable = ({ data }) => {
         if (new_row.hasOwnProperty('number') && new_row.number !== '') {
             // - [Проверка на существование VLAN]
             const rowIndex = rows.findIndex(r => r.number === new_row.number);
-            if ({...rows[rowIndex]}.number !== new_row.number) {
+            if ({...rows[rowIndex]}.number !== new_row.number && new_row.number <= 4096) {
                 set_rows([...rows, new_row]);
-                // [...rows].sort((a, b) => a.number - b.number)
             }
             else {
                 alert('Такой номер VLAN уже существует!')
@@ -130,6 +129,7 @@ const VlanTable = ({ data }) => {
 
     // - [Сортировка] //TODO: [3][!]
     rows.sort((a, b) => a.number - b.number);
+
 
 
     return (

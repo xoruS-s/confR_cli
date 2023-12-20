@@ -1,7 +1,7 @@
 .wrapper {
     height: 380px;
 }
-.EOI, .DOOI {
+.EOI, .DOOI, .SPOI {
     opacity: 0;
     font-size: 20px !important;
     color: grey;
@@ -15,6 +15,10 @@
 .DOOI:hover {
     /*color: #8b0000!important;*/
     color: #c0392b !important;
+    transition: .1s;
+}
+.SPOI:hover {
+    color: #540801 !important;
     transition: .1s;
 }
 .pages_area {
@@ -40,7 +44,7 @@
 .arr_input:disabled:hover {
     cursor: not-allowed;
 }
-#col_edit, #col_delete, #col_save, #col_add {
+#col_edit, #col_delete, #col_save, #col_add, #col_shutdown {
     width: 40px;
     border: none;
     padding-top: 2px;
@@ -176,12 +180,28 @@ td {
 }
 .interface_table_rows {
     height: 30px;
+    position: relative;
+}
+.interface_table_rows #row_shutdown {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: rgba(93, 73, 73, 0.9);
+    height: 100%;
+    width: calc(100% - 79px);
+    left: 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .interface_table_rows.selected {
     background-color: rgba(99, 110, 114, 0.4);
 }
 .interface_table_rows.selected #col_edit,
-.interface_table_rows.selected #col_delete{
+.interface_table_rows.selected #col_delete,
+.interface_table_rows.selected #col_shutdown {
     background-color: #fff;
 }
 .interface_table_rows_edit {
@@ -216,14 +236,16 @@ td {
     background-color: #bdc3c7;
 }
 .interface_table_rows:hover #col_edit,
-.interface_table_rows:hover #col_delete {
+.interface_table_rows:hover #col_delete,
+.interface_table_rows:hover #col_shutdown {
     background-color: #fff;
 }
 .interface_table_rows.selected:hover {
     background-color: rgba(99, 110, 114, 0.6);
 }
 .interface_table_rows:hover .EOI,
-.interface_table_rows:hover .DOOI {
+.interface_table_rows:hover .DOOI,
+.interface_table_rows:hover .SPOI {
     opacity: 1;
 }
 /*--------------------------------------------------*/
